@@ -35,10 +35,19 @@
         @keyframes marquee-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
         /* WHATSAPP */
-        #waQuickBtn { position: fixed; bottom: 100px; right: 20px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 110; cursor: pointer; }
+        #waQuickBtn { position: fixed; bottom: 120px; right: 20px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 110; cursor: pointer; transition: transform 0.2s; }
+        #waQuickBtn:active { transform: scale(0.9); }
 
         /* MODALE POPUP */
         #welcomePopup { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
+
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(189, 174, 155, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(189, 174, 155, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(189, 174, 155, 0); }
+        }
+        .animate-gold { animation: pulse-gold 2s infinite; }
+        .btn-remove { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background-color: #fee2e2; color: #ef4444; border-radius: 50%; font-weight: bold; }
     </style>
 </head>
 <body class="bg-[#f8f7f5] text-[#333333] font-sans pb-40 lg:pb-0">
@@ -137,8 +146,12 @@
     </div>
 
     <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[100]">
-        <div id="mobileSaving" class="hidden bg-green-600 text-white text-center py-1 text-[8px] font-bold uppercase"></div>
-        <div class="bg-[#333333] text-white p-4 flex justify-between items-center">
+        <div id="mobileSaving" class="hidden bg-green-600 text-white text-center py-1.5 text-[8px] font-bold uppercase border-b border-green-500"></div>
+        <div id="mobileIncentive" class="hidden bg-amber-500 text-white text-center py-1.5 text-[8px] font-bold uppercase">
+            💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio da 30ml!
+        </div>
+        
+        <div class="bg-[#333333] text-white p-4 flex justify-between items-center shadow-2xl">
             <div onclick="toggleMobileCart()">
                 <span class="text-[9px] uppercase text-[#bdae9b]">Totale</span>
                 <span class="choganTotalDisplay text-xl font-light block">0.00 €</span>
@@ -198,7 +211,6 @@
                     if (cod && pr && pr.trim() !== "" && pr !== "-") {
                         let prezzo = parseFloat(pr.replace('€', '').replace(',', '.').trim());
                         if (!isNaN(prezzo)) {
-                            // Stima prezzo negozio (media) per calcolo risparmio
                             let retail = (form.includes("15ml")) ? 45 : (form.includes("30ml") ? 75 : 130);
                             allItems.push({ cod: cod.trim(), nome, isp, genere, formato: form, prezzo, retail });
                         }
@@ -274,16 +286,21 @@
             document.getElementById('mainActionBtn').innerText = btnText;
             document.getElementById('mobileActionBtn').innerText = btnText;
 
-            // Calcolo Risparmio
-            if(cart.length > 0 && savings > 0) {
-                const saveMsg = `💰 Stai risparmiando circa ${savings.toFixed(0)}€ rispetto al negozio!`;
+            // Logica Risparmio & Incentivo
+            if(cart.length > 0) {
+                const saveMsg = `💰 Risparmio stimato: circa ${savings.toFixed(0)}€ rispetto al negozio!`;
                 document.getElementById('savingCalc').innerText = saveMsg;
                 document.getElementById('savingCalc').classList.remove('hidden');
                 document.getElementById('mobileSaving').innerText = saveMsg;
                 document.getElementById('mobileSaving').classList.remove('hidden');
+
+                // Mostra incentivo solo se ne manca 1 (countPromo === 1)
+                const isIncentiveVisible = countPromo === 1;
+                document.getElementById('mobileIncentive').classList.toggle('hidden', !isIncentiveVisible);
             } else {
                 document.getElementById('savingCalc').classList.add('hidden');
                 document.getElementById('mobileSaving').classList.add('hidden');
+                document.getElementById('mobileIncentive').classList.add('hidden');
             }
 
             const promoMsg = promoActive ? "✨ PROMO ATTIVA: OMAGGIO SBLOCCATO!" : (countPromo === 1 ? "💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio!" : "");
