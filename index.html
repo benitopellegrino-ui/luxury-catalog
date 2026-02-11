@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Essence Catalog</title>
+    <title>🇮🇹 Italian Luxury Essence</title>
     
+    <link rel="icon" href="https://fav.farm/🇮🇹">
+
     <script type="text/javascript">
     var _iub = _iub || [];
     _iub.csConfiguration = {"askConsentAtCookiePolicyUpdate":true,"floatingPullLeft":true,"gdprAppliesGlobally":true,"lang":"it","siteId":3933560,"cookiePolicyId":60532041, "banner":{ "acceptButtonDisplay":true,"customizeButtonDisplay":true,"fontSize":"14px","position":"float-top-center" }};
@@ -37,7 +39,7 @@
 <body class="bg-[#f8f7f5] text-[#333333] font-sans pb-40 lg:pb-0">
 
     <header class="bg-[#333333] text-[#f4f4f2] p-6 shadow-xl text-center sticky top-0 z-50">
-        <h1 class="text-2xl font-light uppercase tracking-[0.3em]">Luxury Essences</h1>
+        <h1 class="text-xl md:text-2xl font-light uppercase tracking-[0.2em]">🇮🇹 Italian Luxury Essence</h1>
         <div id="collabWelcome" class="hidden text-[9px] text-[#bdae9b] mt-1 tracking-widest uppercase font-bold"></div>
         
         <div id="selectionBanner" class="hidden bg-[#bdae9b] text-[#333333] text-[10px] py-2 mt-2 tracking-[0.2em] uppercase font-bold animate-pulse text-center">
@@ -144,12 +146,12 @@
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const WHATSAPP_NUMBER = urlParams.get('tel') || "393278278502"; 
+        const WHATSAPP_NUMBER = urlParams.get('tel') || "393808671683"; 
         const COLLAB_NAME = urlParams.get('nome');
 
         if(COLLAB_NAME) {
             const welcomeDiv = document.getElementById('collabWelcome');
-            welcomeDiv.innerText = `Catalogo di ${decodeURIComponent(COLLAB_NAME)}`;
+            welcomeDiv.innerText = `Referente Personale: ${decodeURIComponent(COLLAB_NAME)}`;
             welcomeDiv.classList.remove('hidden');
         }
 
@@ -161,7 +163,6 @@
 
         async function loadData() {
             try {
-                // MODIFICATO: Ora punta a listino.csv
                 const res = await fetch('listino.csv');
                 const data = await res.text();
                 parseCSV(data);
@@ -293,8 +294,9 @@
 
         function sendToWhatsApp() {
             if (!cart.length) return alert("Carrello vuoto!");
-            let msg = `*ORDINE LUXURY ESSENCES*\n\n`;
-            if(COLLAB_NAME) msg += `*Collaboratore:* ${decodeURIComponent(COLLAB_NAME)}\n\n`;
+            // NOME MODIFICATO NEL MESSAGGIO WHATSAPP
+            let msg = `*ORDINE ITALIAN LUXURY ESSENCE*\n\n`;
+            if(COLLAB_NAME) msg += `*Referente Personale:* ${decodeURIComponent(COLLAB_NAME)}\n\n`;
             cart.forEach(p => msg += `• ${p.cod} | ${p.nome} (${p.formato}) - ${p.prezzo.toFixed(2)}€\n`);
             if(freebie) msg += `\n🎁 *OMAGGIO:* ${freebie.nome} (30ml)\n`;
             msg += `\n*TOTALE: ${document.querySelector('.choganTotalDisplay').innerText}*`;
