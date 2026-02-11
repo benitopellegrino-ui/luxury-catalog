@@ -32,33 +32,6 @@
             gap: 6px;
         }
 
-        .marquee-container {
-            overflow: hidden;
-            white-space: nowrap;
-            background-color: #f0edea;
-            padding: 12px 0;
-            margin: 15px 0;
-            border-top: 1px solid #d1c7bc;
-            border-bottom: 1px solid #d1c7bc;
-        }
-        .marquee-content {
-            display: inline-block;
-            animation: marquee-scroll 25s linear infinite;
-        }
-        .marquee-item {
-            display: inline-block;
-            margin-right: 50px;
-            font-size: 11px;
-            font-weight: 800;
-            color: #555;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-        @keyframes marquee-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-
         #waQuickBtn {
             position: fixed;
             bottom: 85px;
@@ -74,9 +47,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
             z-index: 90;
             cursor: pointer;
-            transition: transform 0.2s ease-in-out;
         }
-        #waQuickBtn:hover { transform: scale(1.15); }
 
         @keyframes pulse-gold {
             0% { box-shadow: 0 0 0 0 rgba(189, 174, 155, 0.7); }
@@ -84,7 +55,7 @@
             100% { box-shadow: 0 0 0 0 rgba(189, 174, 155, 0); }
         }
         .animate-gold { animation: pulse-gold 2s infinite; }
-        .btn-remove { width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; background-color: #fee2e2; color: #ef4444; border-radius: 50%; font-weight: bold; }
+        .btn-remove { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background-color: #fee2e2; color: #ef4444; border-radius: 50%; font-weight: bold; }
     </style>
 </head>
 <body class="bg-[#f8f7f5] text-[#333333] font-sans pb-40 lg:pb-0">
@@ -99,10 +70,10 @@
     <div class="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 p-4">
         <div class="lg:w-2/3">
             <div class="bg-white border-2 border-dashed border-[#bdae9b] p-5 mb-6 text-center shadow-sm">
-                <h2 class="text-xs font-black uppercase tracking-widest text-[#333333] mb-3">QUESTO SITO FUNGE DA LISTINO INTERATTIVO</h2>
+                <h2 class="text-xs font-black uppercase tracking-widest text-[#333333] mb-3">LISTINO INTERATTIVO</h2>
                 <div class="text-[11px] text-gray-600 space-y-3 leading-relaxed text-left max-w-md mx-auto">
-                    <p>1️⃣ <strong>Richiedere una consulenza Whatsapp</strong> (in merito all'acquisto, al formato e ai tuoi gusti)</p>
-                    <p>2️⃣ <strong>Aggiungere già a carrello le tue Essenze Preferite</strong>, per poi inviarle al tuo referente su Whatsapp, al fine di velocizzare l'acquisto ed ottenere un OMAGGIO!</p>
+                    <p>1️⃣ <strong>Richiedi una consulenza Whatsapp</strong></p>
+                    <p>2️⃣ <strong>Crea la tua lista</strong> e inviala per velocizzare l'acquisto ed ottenere un OMAGGIO!</p>
                 </div>
             </div>
 
@@ -111,7 +82,7 @@
                        class="w-full p-4 bg-[#fdfdfd] border border-gray-200 outline-none focus:border-tortora text-xs tracking-widest uppercase mb-4">
                 
                 <div class="filter-grid mb-3">
-                    <button onclick="setFilter('format', 'all', this)" class="format-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Tutti</button>
+                    <button onclick="setFilter('format', 'all', this)" class="format-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Tutti Formati</button>
                     <button onclick="setFilter('format', '15ml', this)" class="format-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">15ml</button>
                     <button onclick="setFilter('format', '30ml', this)" class="format-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">30ml</button>
                     <button onclick="setFilter('format', '70ml', this)" class="format-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">70ml</button>
@@ -119,7 +90,7 @@
                 </div>
 
                 <div class="filter-grid">
-                    <button onclick="setFilter('type', 'all', this)" class="type-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Tutte Linee</button>
+                    <button onclick="setFilter('type', 'all', this)" class="type-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Tutti Generi</button>
                     <button onclick="setFilter('type', 'Uomo', this)" class="type-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Uomo</button>
                     <button onclick="setFilter('type', 'Donna', this)" class="type-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Donna</button>
                     <button onclick="setFilter('type', 'Unisex', this)" class="type-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Unisex</button>
@@ -138,7 +109,7 @@
 
         <div class="hidden lg:block lg:w-1/3">
             <div class="bg-white p-6 shadow-2xl sticky lg:top-24 border border-gray-100">
-                <h2 class="text-xs font-bold uppercase tracking-widest mb-6 border-b pb-4 text-gray-400">La Tua Selezione</h2>
+                <h2 class="text-xs font-bold uppercase tracking-widest mb-6 border-b pb-4 text-gray-400">Riepilogo Scelte</h2>
                 <div id="cartList" class="space-y-3 mb-6 max-h-[450px] overflow-y-auto no-scrollbar"></div>
                 
                 <div id="promoBox" class="hidden bg-[#f4f1ee] p-4 mb-6 border border-[#d1c7bc]">
@@ -149,16 +120,12 @@
                 <div class="border-t pt-4 text-center">
                     <span class="text-[10px] uppercase text-gray-400 font-bold tracking-widest">Totale Provvisorio</span>
                     <div class="choganTotalDisplay text-4xl font-light text-antracite">0.00 €</div>
-                    <button id="mainActionBtn" onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 mt-4 font-black uppercase text-[11px] border-2 border-[#bdae9b] leading-tight cursor-pointer">
+                    <button id="mainActionBtn" onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 mt-4 font-black uppercase text-[11px] border-2 border-[#bdae9b]">
                         RICHIEDI CONSULENZA WHATSAPP
                     </button>
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="waQuickBtn" onclick="handleWhatsAppAction()" class="lg:hidden">
-        <svg width="30" height="30" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
     </div>
 
     <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[95]">
@@ -167,11 +134,11 @@
         </div>
         <div class="bg-[#333333] text-white p-4 flex justify-between items-center shadow-2xl">
             <div onclick="toggleMobileCart()">
-                <span class="text-[9px] uppercase text-[#bdae9b]">Totale Scelte</span>
+                <span class="text-[9px] uppercase text-[#bdae9b]">Totale</span>
                 <span class="choganTotalDisplay text-xl font-light block">0.00 €</span>
             </div>
             <div class="flex items-center gap-2">
-                <button id="quickFreebieBtn" onclick="startFreebieSelection()" class="hidden bg-[#bdae9b] text-[#333333] h-12 px-4 rounded font-black text-[10px] uppercase animate-gold">Regalo +</button>
+                <button id="quickFreebieBtn" onclick="startFreebieSelection()" class="hidden bg-[#bdae9b] text-[#333333] h-12 px-4 rounded font-black text-[10px] uppercase animate-gold">Omaggio +</button>
                 <button onclick="toggleMobileCart()" class="bg-white/10 h-12 px-4 rounded text-[10px] uppercase font-bold">
                     Lista <span id="cartBadge" class="ml-1 bg-[#bdae9b] text-[#333333] px-2 rounded-full">0</span>
                 </button>
@@ -181,22 +148,19 @@
 
     <div id="mobileCartPanel" class="lg:hidden fixed inset-0 bg-white z-[100] p-6 flex flex-col">
         <div class="flex justify-between items-center border-b pb-4 mb-4">
-            <h2 class="font-bold uppercase text-xs">Riepilogo Lista</h2>
+            <h2 class="font-bold uppercase text-xs">I Tuoi Preferiti</h2>
             <button onclick="toggleMobileCart()" class="text-2xl">✕</button>
         </div>
         <div id="cartListMobile" class="flex-1 overflow-y-auto space-y-3 no-scrollbar"></div>
         <div class="border-t pt-6 text-center space-y-4">
             <div class="choganTotalDisplay text-4xl font-light">0.00 €</div>
-            <button id="mobileActionBtn" onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 font-black uppercase text-[11px] border-2 border-[#bdae9b]">
-                RICHIEDI CONSULENZA WHATSAPP
-            </button>
+            <button id="mobileActionBtn" onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 font-black uppercase text-[11px] border-2 border-[#bdae9b]">INVIA WHATSAPP</button>
         </div>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const WHATSAPP_NUMBER = urlParams.get('tel') || "393275428780"; 
-        const COLLAB_NAME = urlParams.get('nome') || "Referente";
+        const WHATSAPP_NUMBER = "393275428780"; 
+        const COLLAB_NAME = new URLSearchParams(window.location.search).get('nome') || "Referente";
 
         let allItems = [];
         let cart = [];
@@ -209,7 +173,7 @@
                 const res = await fetch('listino.csv');
                 const data = await res.text();
                 parseCSV(data);
-            } catch (e) { console.error("Errore caricamento CSV."); }
+            } catch (e) { console.error("Errore CSV"); }
         }
 
         function parseCSV(data) {
@@ -217,24 +181,21 @@
             const rows = data.split('\n').slice(1);
             rows.forEach(row => {
                 const col = row.split(';');
-                if (col.length < 12) return;
-                
+                if (col.length < 13) return; // Salta righe malformate
+
                 const nome = col[0].trim();
                 const isp = col[1].trim();
-                // Pulizia aggressiva del genere per evitare errori di filtraggio
-                const genereRaw = col[2] ? col[2].trim() : "Unisex";
-                let genereMod = "Unisex";
-                if (genereRaw.toLowerCase().includes("uomo")) genereMod = "Uomo";
-                else if (genereRaw.toLowerCase().includes("donna")) genereMod = "Donna";
+                const genere = col[12] ? col[12].trim() : "Unisex"; // La colonna GENERE è la 13esima (indice 12)
 
                 const add = (cod, pr, form) => {
                     if (cod && pr && pr.trim() !== "" && pr !== "-") {
                         let prezzo = parseFloat(pr.replace('€', '').replace(',', '.').trim());
                         if (!isNaN(prezzo)) {
-                            allItems.push({ cod: cod.trim(), nome, isp, genere: genereMod, formato: form, prezzo });
+                            allItems.push({ cod: cod.trim(), nome, isp, genere, formato: form, prezzo });
                         }
                     }
                 };
+
                 add(col[4], col[5], "15ml");
                 add(col[6], col[7], "30ml");
                 add(col[8], col[9], "70ml");
@@ -258,15 +219,15 @@
                 <div class="bg-white p-5 border border-gray-100 flex justify-between items-center shadow-sm">
                     <div class="flex-1">
                         <div class="flex gap-2 mb-2">
-                            <span class="text-[7px] font-black px-1.5 py-0.5 bg-gray-100 text-gray-500 rounded uppercase">${p.formato}</span>
-                            <span class="text-[7px] font-black px-1.5 py-0.5 bg-zinc-800 text-white rounded uppercase">${p.genere}</span>
+                            <span class="text-[7px] font-black px-1.5 py-0.5 bg-zinc-100 text-zinc-500 rounded uppercase tracking-tighter">${p.formato}</span>
+                            <span class="text-[7px] font-black px-1.5 py-0.5 ${p.genere === 'Uomo' ? 'bg-blue-100 text-blue-600' : p.genere === 'Donna' ? 'bg-rose-100 text-rose-600' : 'bg-zinc-800 text-white'} rounded uppercase tracking-tighter">${p.genere}</span>
                         </div>
                         <h3 class="font-bold text-xs uppercase tracking-widest">${p.nome}</h3>
                         <p class="text-[9px] text-gray-400 italic">Ispirato a: ${p.isp}</p>
                         <p class="mt-1 font-light text-lg">${p.prezzo.toFixed(2)} €</p>
                     </div>
-                    <button onclick="addToCart('${p.cod}')" class="bg-gray-50 w-12 h-12 rounded-full text-2xl shadow-sm hover:bg-zinc-800 hover:text-white cursor-pointer transition-colors">+</button>
-                </div>`).join('') || '<p class="col-span-full text-center py-10 text-gray-400 uppercase text-xs">Nessun risultato</p>';
+                    <button onclick="addToCart('${p.cod}')" class="bg-zinc-50 w-12 h-12 rounded-full text-2xl shadow-sm hover:bg-zinc-800 hover:text-white transition-colors">+</button>
+                </div>`).join('') || '<p class="col-span-full text-center py-10 text-gray-400 uppercase text-xs">Nessun risultato trovato</p>';
         }
 
         function setFilter(type, value, btn) {
@@ -301,10 +262,9 @@
             const countPromo = cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length;
             const promoActive = countPromo >= 2;
             
-            const btnText = cart.length > 0 ? "🤩 HO AGGIUNTO LE MIE ESSENZE PREFERITE: GUIDAMI ALL'ACQUISTO!" : "RICHIEDI CONSULENZA WHATSAPP";
+            const btnText = cart.length > 0 ? "INVIA LA TUA SELEZIONE!" : "RICHIEDI CONSULENZA WHATSAPP";
             document.getElementById('mainActionBtn').innerText = btnText;
             document.getElementById('mobileActionBtn').innerText = btnText;
-            document.getElementById('waQuickBtn').classList.toggle('hidden', cart.length > 0);
 
             const promoMsg = promoActive ? "✨ PROMO ATTIVA: OMAGGIO SBLOCCATO!" : (countPromo === 1 ? "💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio!" : "");
             document.getElementById('autoPromoMsg').classList.toggle('hidden', !promoMsg);
@@ -316,23 +276,19 @@
 
             const listHTML = cart.map((p, i) => `
                 <div class="cart-item bg-white p-3 border mb-2 flex justify-between items-center rounded-lg text-[10px]">
-                    <div>
-                        <p class="font-bold uppercase">${p.nome}</p>
-                        <p class="text-gray-400">${p.formato} - ${p.genere}</p>
-                    </div>
+                    <div><p class="font-bold uppercase">${p.nome}</p><p class="text-gray-400">${p.formato} - ${p.genere}</p></div>
                     <button onclick="removeFromCart(${i})" class="btn-remove">✕</button>
                 </div>`).join('') + (freebie ? `<div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2"><span>🎁 <b>OMAGGIO:</b> ${freebie.nome} (30ml)</span><button onclick="removeFreebie()" class="text-red-500 font-bold">✕</button></div>` : '');
             
-            document.getElementById('cartList').innerHTML = listHTML || '<p class="text-center py-5 text-gray-400 uppercase text-[10px]">Nessun prodotto selezionato</p>';
+            document.getElementById('cartList').innerHTML = listHTML || '<p class="text-center py-5 text-gray-400 uppercase text-[10px]">Lista vuota</p>';
             document.getElementById('cartListMobile').innerHTML = document.getElementById('cartList').innerHTML;
             document.querySelectorAll('.choganTotalDisplay').forEach(el => el.innerText = total.toFixed(2) + " €");
             document.getElementById('cartBadge').innerText = cart.length;
         }
 
         function handleWhatsAppAction() {
-            let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei avere info in merito alle vostre essenze italiane.` : `*HO AGGIUNTO LE MIE ESSENZE PREFERITE*\n\n*Referente:* ${decodeURIComponent(COLLAB_NAME)}\n\n` + cart.map(p => `• ${p.nome} (${p.formato})`).join('\n');
-            if(freebie) msg += `\n\n🎁 *OMAGGIO SCELTO:* ${freebie.nome} (30ml)`;
-            if(cart.length > 0) msg += `\n\nMi guideresti al completamento dell'acquisto?`;
+            let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei informazioni sulle essenze.` : `*ECCO LA MIA LISTA PREFERITI*\n\n` + cart.map(p => `• ${p.nome} (${p.formato} - ${p.genere})`).join('\n');
+            if(freebie) msg += `\n\n🎁 *OMAGGIO:* ${freebie.nome} (30ml)`;
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
