@@ -59,7 +59,6 @@
             100% { transform: translateX(-50%); }
         }
 
-        /* EFFETTI WHATSAPP */
         #waQuickBtn {
             position: fixed;
             bottom: 85px;
@@ -92,7 +91,6 @@
 
     <header class="bg-[#333333] text-[#f4f4f2] p-6 shadow-xl text-center sticky top-0 z-50">
         <h1 class="text-xl md:text-2xl font-light uppercase tracking-[0.2em]">🇮🇹 Italian Luxury Essence</h1>
-        <div id="collabWelcome" class="hidden text-[9px] text-[#bdae9b] mt-1 tracking-widest uppercase font-bold"></div>
         <div id="selectionBanner" class="hidden bg-[#bdae9b] text-[#333333] text-[10px] py-2 mt-2 tracking-[0.2em] uppercase font-bold animate-pulse text-center">
             ✨ Seleziona ora l'omaggio da 30ml dalla lista ✨
         </div>
@@ -230,13 +228,14 @@
         }
 
         function parseCSV(data) {
+            allItems = []; // Pulisce l'array prima di riempirlo
             const rows = data.split('\n').slice(1);
             rows.forEach(row => {
                 const col = row.split(';');
                 if (col.length < 12) return;
                 const nome = col[0].trim();
                 const isp = col[1].trim();
-                const tipo = col[2].trim();
+                const tipo = col[2].trim(); // Colonna Genere
                 const add = (cod, pr, form) => {
                     if (cod && pr && pr.trim() !== "" && pr !== "-") {
                         let prezzo = parseFloat(pr.replace('€', '').replace(',', '.').trim());
@@ -254,16 +253,34 @@
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase();
             let filtered = allItems;
-            if (currentFormat !== 'all') filtered = filtered.filter(p => p.formato.toLowerCase().includes(currentFormat));
-            if (currentType !== 'all') filtered = filtered.filter(p => p.tipo === currentType);
-            if (search) filtered = filtered.filter(p => p.nome.toLowerCase().includes(search) || p.isp.toLowerCase().includes(search));
+
+            // Filtro Formato
+            if (currentFormat !== 'all') {
+                filtered = filtered.filter(p => p.formato.toLowerCase().includes(currentFormat.toLowerCase()));
+            }
+
+            // Filtro Genere (Flessibile: cerca se la parola è contenuta)
+            if (currentType !== 'all') {
+                filtered = filtered.filter(p => p.tipo.toLowerCase().includes(currentType.toLowerCase()));
+            }
+
+            // Filtro Ricerca Testo
+            if (search) {
+                filtered = filtered.filter(p => p.nome.toLowerCase().includes(search) || p.isp.toLowerCase().includes(search));
+            }
             
-            document.getElementById('productGrid').innerHTML = filtered.map(p => `
+            const grid = document.getElementById('productGrid');
+            if (filtered.length === 0) {
+                grid.innerHTML = '<p class="col-span-full text-center py-10 text-gray-400 uppercase text-xs">Nessun risultato trovato</p>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => `
                 <div class="bg-white p-5 border border-gray-100 flex justify-between items-center shadow-sm">
                     <div class="flex-1">
                         <span class="text-[8px] font-bold px-2 py-0.5 bg-gray-100 text-tortora rounded uppercase">${p.formato} - ${p.tipo}</span>
                         <h3 class="font-bold text-xs uppercase tracking-widest mt-1">${p.nome}</h3>
-                        <p class="text-[9px] text-gray-500">Ispirato a: ${p.isp}</p>
+                        <p class="text-[9px] text-gray-500 italic">Ispirato a: ${p.isp}</p>
                         <p class="mt-1 font-light text-lg">${p.prezzo.toFixed(2)} €</p>
                     </div>
                     <button onclick="addToCart('${p.cod}')" class="bg-gray-50 w-12 h-12 rounded-full text-2xl shadow-sm active:bg-tortora active:text-white cursor-pointer">+</button>
@@ -327,6 +344,11 @@
             document.getElementById('cartBadge').innerText = cart.length;
         }
 
+        function removeFromCart(i) { cart.splice(i, 1); if(cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length < 2) freebie = null; updateUI(); }
+        function removeFreebie() { freebie = null; updateUI(); }
+        function toggleMobileCart() { document.getElementById('mobileCartPanel').classList.toggle('open'); }
+        function startFreebieSelection() { document.body.classList.add('choosing-freebie-mode'); document.getElementById('selectionBanner').classList.remove('hidden'); if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); window.scrollTo({top: 0, behavior: 'smooth'}); }
+        
         function handleWhatsAppAction() {
             let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei avere info in merito alle vostre essenze italiane.` : `*HO AGGIUNTO LE MIE ESSENZE PREFERITE*\n\n*Referente:* ${decodeURIComponent(COLLAB_NAME)}\n\n` + cart.map(p => `• ${p.nome} (${p.formato})`).join('\n');
             if(freebie) msg += `\n\n🎁 *OMAGGIO SCELTO:* ${freebie.nome} (30ml)`;
@@ -334,11 +356,6 @@
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        function removeFromCart(i) { cart.splice(i, 1); if(cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length < 2) freebie = null; updateUI(); }
-        function removeFreebie() { freebie = null; updateUI(); }
-        function toggleMobileCart() { document.getElementById('mobileCartPanel').classList.toggle('open'); }
-        function startFreebieSelection() { document.body.classList.add('choosing-freebie-mode'); document.getElementById('selectionBanner').classList.remove('hidden'); if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); window.scrollTo({top: 0, behavior: 'smooth'}); }
-        
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         loadData();
     </script>
