@@ -28,26 +28,28 @@
 
         .filter-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 6px;
         }
 
         #waQuickBtn {
             position: fixed;
-            bottom: 85px;
+            bottom: 100px; /* Alzato per non sovrapporsi alla barra mobile */
             right: 20px;
             background-color: #25D366;
             color: white;
-            width: 55px;
-            height: 55px;
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 90;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 110; /* Sopra a tutto */
             cursor: pointer;
+            transition: transform 0.2s;
         }
+        #waQuickBtn:active { transform: scale(0.9); }
 
         @keyframes pulse-gold {
             0% { box-shadow: 0 0 0 0 rgba(189, 174, 155, 0.7); }
@@ -70,27 +72,27 @@
     <div class="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 p-4">
         <div class="lg:w-2/3">
             <div class="bg-white border-2 border-dashed border-[#bdae9b] p-5 mb-6 text-center shadow-sm">
-                <h2 class="text-xs font-black uppercase tracking-widest text-[#333333] mb-3">LISTINO INTERATTIVO</h2>
+                <h2 class="text-xs font-black uppercase tracking-widest text-[#333333] mb-3">QUESTO SITO FUNGE DA LISTINO INTERATTIVO</h2>
                 <div class="text-[11px] text-gray-600 space-y-3 leading-relaxed text-left max-w-md mx-auto">
-                    <p>1️⃣ <strong>Richiedi una consulenza Whatsapp</strong></p>
-                    <p>2️⃣ <strong>Crea la tua lista</strong> e inviala per velocizzare l'acquisto ed ottenere un OMAGGIO!</p>
+                    <p>1️⃣ <strong>Richiedere una consulenza Whatsapp</strong> (in merito all'acquisto, al formato e ai tuoi gusti)</p>
+                    <p>2️⃣ <strong>Aggiungere già a carrello le tue Essenze Preferite</strong>, per poi inviarle al tuo referente su Whatsapp, al fine di velocizzare l'acquisto ed ottenere un OMAGGIO!</p>
                 </div>
             </div>
 
             <div class="bg-white p-5 shadow-sm mb-6 sticky top-24 z-40 border border-gray-100">
-                <input type="text" id="searchInput" placeholder="Cerca fragranza, marca o codice..." 
-                       class="w-full p-4 bg-[#fdfdfd] border border-gray-200 outline-none focus:border-tortora text-xs tracking-widest uppercase mb-4">
-                
-                <div class="filter-grid mb-3">
-                    <button onclick="setFilter('format', 'all', this)" class="format-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Tutti Formati</button>
+                <div class="filter-grid mb-4">
+                    <button onclick="setFilter('format', 'all', this)" class="format-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Tutti</button>
                     <button onclick="setFilter('format', '15ml', this)" class="format-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">15ml</button>
                     <button onclick="setFilter('format', '30ml', this)" class="format-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">30ml</button>
                     <button onclick="setFilter('format', '70ml', this)" class="format-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">70ml</button>
-                    <button onclick="setFilter('format', '50ml', this)" class="format-btn border border-amber-600 text-amber-700 py-2 text-[9px] font-bold uppercase bg-white">50ml Lux</button>
+                    <button onclick="setFilter('format', '50ml', this)" class="format-btn border border-amber-600 text-amber-700 py-2 text-[9px] font-bold uppercase bg-white col-span-4 mt-1">50ml Lux</button>
                 </div>
 
+                <input type="text" id="searchInput" placeholder="Cerca fragranza, marca o codice..." 
+                       class="w-full p-4 bg-[#fdfdfd] border border-gray-200 outline-none focus:border-tortora text-xs tracking-widest uppercase mb-4">
+                
                 <div class="filter-grid">
-                    <button onclick="setFilter('type', 'all', this)" class="type-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Tutti Generi</button>
+                    <button onclick="setFilter('type', 'all', this)" class="type-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">All</button>
                     <button onclick="setFilter('type', 'Uomo', this)" class="type-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Uomo</button>
                     <button onclick="setFilter('type', 'Donna', this)" class="type-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Donna</button>
                     <button onclick="setFilter('type', 'Unisex', this)" class="type-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Unisex</button>
@@ -128,7 +130,11 @@
         </div>
     </div>
 
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[95]">
+    <div id="waQuickBtn" onclick="handleWhatsAppAction()">
+        <svg width="35" height="35" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+    </div>
+
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[100]">
         <div id="autoPromoMsg" class="hidden bg-[#bdae9b] text-[#333333] text-center py-3 text-[9px] font-bold uppercase border-t border-white">
             <span id="autoPromoText"></span>
         </div>
@@ -146,7 +152,7 @@
         </div>
     </div>
 
-    <div id="mobileCartPanel" class="lg:hidden fixed inset-0 bg-white z-[100] p-6 flex flex-col">
+    <div id="mobileCartPanel" class="lg:hidden fixed inset-0 bg-white z-[120] p-6 flex flex-col">
         <div class="flex justify-between items-center border-b pb-4 mb-4">
             <h2 class="font-bold uppercase text-xs">I Tuoi Preferiti</h2>
             <button onclick="toggleMobileCart()" class="text-2xl">✕</button>
@@ -181,11 +187,11 @@
             const rows = data.split('\n').slice(1);
             rows.forEach(row => {
                 const col = row.split(';');
-                if (col.length < 13) return; // Salta righe malformate
+                if (col.length < 13) return;
 
                 const nome = col[0].trim();
                 const isp = col[1].trim();
-                const genere = col[12] ? col[12].trim() : "Unisex"; // La colonna GENERE è la 13esima (indice 12)
+                const genere = col[12] ? col[12].trim() : "Unisex";
 
                 const add = (cod, pr, form) => {
                     if (cod && pr && pr.trim() !== "" && pr !== "-") {
@@ -287,8 +293,8 @@
         }
 
         function handleWhatsAppAction() {
-            let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei informazioni sulle essenze.` : `*ECCO LA MIA LISTA PREFERITI*\n\n` + cart.map(p => `• ${p.nome} (${p.formato} - ${p.genere})`).join('\n');
-            if(freebie) msg += `\n\n🎁 *OMAGGIO:* ${freebie.nome} (30ml)`;
+            let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei avere info in merito alle vostre essenze italiane.` : `*ECCO LA MIA LISTA PREFERITI*\n\n` + cart.map(p => `• ${p.nome} (${p.formato} - ${p.genere})`).join('\n');
+            if(freebie) msg += `\n\n🎁 *OMAGGIO SCELTO:* ${freebie.nome} (30ml)`;
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
