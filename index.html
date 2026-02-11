@@ -33,7 +33,6 @@
             width: 38px; height: 38px; display: flex; align-items: center; justify-content: center;
             background-color: #fee2e2; color: #ef4444; border-radius: 50%; font-size: 18px; font-weight: bold;
         }
-        .iubenda-embed { font-size: 10px !important; text-decoration: none !important; margin: 0 5px; color: #888 !important; }
     </style>
 </head>
 <body class="bg-[#f8f7f5] text-[#333333] font-sans pb-40 lg:pb-0">
@@ -50,7 +49,7 @@
     <div class="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 p-4">
         
         <div class="lg:w-2/3">
-            <div class="bg-white border-2 border-dashed border-[#bdae9b] p-5 mb-6 text-center">
+            <div class="bg-white border-2 border-dashed border-[#bdae9b] p-5 mb-6 text-center shadow-sm">
                 <h2 class="text-xs font-black uppercase tracking-widest text-[#333333] mb-3">QUESTO SITO FUNGE DA LISTINO INTERATTIVO</h2>
                 <div class="text-[11px] text-gray-600 space-y-3 leading-relaxed text-left max-w-md mx-auto">
                     <p>Qui potrai:</p>
@@ -63,20 +62,28 @@
                 <input type="text" id="searchInput" placeholder="Cerca fragranza, marca o codice..." 
                        class="w-full p-4 bg-[#fdfdfd] border border-gray-200 outline-none focus:border-tortora text-xs tracking-widest uppercase mb-4">
                 
-                <div id="formatFilters" class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+                <div id="formatFilters" class="flex gap-2 overflow-x-auto pb-4 no-scrollbar">
                     <button onclick="setFilter('format', 'all', this)" class="format-btn filter-active border border-gray-200 px-4 py-2 text-[9px] font-bold uppercase tracking-tighter bg-white">Tutti Formati</button>
                     <button onclick="setFilter('format', '15ml', this)" class="format-btn border border-gray-200 px-4 py-2 text-[9px] font-bold uppercase bg-white">15ml</button>
                     <button onclick="setFilter('format', '30ml', this)" class="format-btn border border-gray-200 px-4 py-2 text-[9px] font-bold uppercase bg-white">30ml</button>
                     <button onclick="setFilter('format', '70ml', this)" class="format-btn border border-gray-200 px-4 py-2 text-[9px] font-bold uppercase bg-white">70ml</button>
                     <button onclick="setFilter('format', '50ml', this)" class="format-btn border border-amber-600 text-amber-700 px-4 py-2 text-[9px] font-bold uppercase bg-white">50ml Luxury</button>
                 </div>
+
+                <div class="mt-2 bg-amber-50 border border-amber-200 p-4 rounded-lg">
+                    <p class="text-[11px] leading-relaxed text-amber-900 font-medium text-center">
+                        ⏳ <strong>PROMO ATTIVA per i prossimi 3 giorni:</strong><br>
+                        AGGIUNGI A CARRELLO N.2 PRODOTTI DA 50ml o 70ml, e ricevi in <strong>OMAGGIO</strong> una essenza tra 30ml a tua scelta! 😳
+                    </p>
+                </div>
             </div>
+
             <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
 
         <div class="hidden lg:block lg:w-1/3">
             <div class="bg-white p-6 shadow-2xl sticky lg:top-24 border border-gray-100">
-                <h2 class="text-xs font-bold uppercase tracking-widest mb-6 border-b pb-4 text-gray-400">Il Tuo Carrello</h2>
+                <h2 class="text-xs font-bold uppercase tracking-widest mb-6 border-b pb-4 text-gray-400">La Tua Selezione</h2>
                 <div id="cartList" class="space-y-3 mb-6 max-h-[450px] overflow-y-auto no-scrollbar"></div>
                 
                 <div id="promoBox" class="hidden bg-[#f4f1ee] p-4 mb-6 border border-[#d1c7bc]">
@@ -129,8 +136,6 @@
 
     <footer class="text-center py-10 bg-white mt-10 border-t border-gray-100">
         <p class="text-[10px] uppercase text-gray-400 mb-4">© 2026 Italian Luxury Essence</p>
-        <a href="https://www.iubenda.com/privacy-policy/60532041" class="iubenda-white iubenda-noiframe iubenda-embed" title="Privacy Policy ">Privacy Policy</a>
-        <a href="https://www.iubenda.com/privacy-policy/60532041/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed" title="Cookie Policy ">Cookie Policy</a>
     </footer>
 
     <script>
@@ -223,7 +228,7 @@
                 <div class="cart-item bg-white p-3 border mb-2 flex justify-between items-center rounded-lg shadow-sm text-[10px]">
                     <div><p class="font-bold uppercase">${p.nome}</p><p class="text-gray-400">${p.formato}</p></div>
                     <button onclick="removeFromCart(${i})" class="btn-remove">✕</button>
-                </div>`).join('') + (freebie ? `<div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2"><span>🎁 <b>OMAGGIO:</b> ${freebie.nome}</span><button onclick="removeFreebie()" class="text-red-500 font-bold">✕</button></div>` : '');
+                </div>`).join('') + (freebie ? `<div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2"><span>🎁 <b>OMAGGIO:</b> ${freebie.nome} (30ml)</span><button onclick="removeFreebie()" class="text-red-500 font-bold">✕</button></div>` : '');
             
             document.getElementById('cartList').innerHTML = cart.length ? listContent : '<p class="text-center py-5 text-gray-400 uppercase text-[10px]">Nessun prodotto selezionato</p>';
             document.getElementById('cartListMobile').innerHTML = document.getElementById('cartList').innerHTML;
@@ -232,8 +237,7 @@
             const countPromo = cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length;
             const promoActive = countPromo >= 2;
             
-            // AGGIORNAMENTO TESTO PULSANTI
-            const btnText = cart.length > 0 ? "Ho aggiunto le mie essenze PREFERITE: Guidami all'acquisto!" : "RICHIEDI CONSULENZA WHATSAPP";
+            const btnText = cart.length > 0 ? "🤩 HO AGGIUNTO LE MIE ESSENZE PREFERITE: GUIDAMI ALL'ACQUISTO!" : "RICHIEDI CONSULENZA WHATSAPP";
             document.getElementById('mainActionBtn').innerText = btnText;
             document.getElementById('mobileActionBtn').innerText = btnText;
 
@@ -251,14 +255,12 @@
         function handleWhatsAppAction() {
             let msg = "";
             if (cart.length === 0) {
-                // MESSAGGIO CONSULENZA
                 msg = `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei avere info in merito alle vostre essenze italiane.`;
             } else {
-                // MESSAGGIO ORDINE / GUIDA ACQUISTO
                 msg = `*HO AGGIUNTO LE MIE ESSENZE PREFERITE*\n\n`;
                 msg += `*Referente:* ${decodeURIComponent(COLLAB_NAME)}\n\n`;
                 cart.forEach(p => msg += `• ${p.nome} (${p.formato})\n`);
-                if(freebie) msg += `\n🎁 *OMAGGIO SCELTO:* ${freebie.nome}\n`;
+                if(freebie) msg += `\n🎁 *OMAGGIO SCELTO:* ${freebie.nome} (30ml)\n`;
                 msg += `\nMi guideresti al completamento dell'acquisto?`;
             }
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
