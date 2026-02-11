@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Italian Luxury Essence | Catalogo Olfazeta</title>
+    
+    <script type="text/javascript">
+    var _iub = _iub || [];
+    _iub.csConfiguration = {"askConsentAtCookiePolicyUpdate":true,"floatingPullLeft":true,"gdprAppliesGlobally":true,"lang":"it","siteId":3933560,"cookiePolicyId":60532041, "banner":{ "acceptButtonDisplay":true,"customizeButtonDisplay":true,"fontSize":"14px","position":"float-top-center" }};
+    </script>
+    <script type="text/javascript" src="https://cs.iubenda.com/autoblocking/3933560.js"></script>
+    <script type="text/javascript" src="//cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+    <style>
+        :root { --gold: #d4af37; --dark: #1a1a1a; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f8f9fa; margin: 0; padding: 20px; color: var(--dark); }
+        .header { text-align: center; padding: 40px 0; background: white; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        h1 { color: var(--gold); letter-spacing: 2px; text-transform: uppercase; margin: 0; }
+        .container { max-width: 1000px; margin: auto; }
+        .search-box { width: 100%; padding: 15px; margin-bottom: 30px; border: 1px solid #ddd; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s; display: flex; flex-direction: column; justify-content: space-between; }
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { margin: 0 0 10px 0; color: var(--dark); }
+        .card p { color: #666; font-size: 14px; margin-bottom: 20px; }
+        .price { font-size: 20px; font-weight: bold; color: var(--gold); margin-bottom: 15px; }
+        .btn-whatsapp { background-color: #25d366; color: white; text-decoration: none; padding: 12px; border-radius: 5px; text-align: center; font-weight: bold; display: block; }
+        .footer-legal { text-align: center; margin-top: 50px; padding: 20px; font-size: 12px; border-top: 1px solid #ddd; }
+        .iubenda-embed { text-decoration: none !important; color: #666 !important; margin: 0 10px; }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Italian Luxury Essence</h1>
+    <p>Eccellenza Italiana - Ispirati ai Grandi Brand</p>
+</div>
+
+<div class="container">
+    <input type="text" id="searchInput" class="search-box" placeholder="Cerca il tuo profumo (es. Chogan 001 o nome brand)...">
+    <div id="catalog" class="grid"></div>
+</div>
+
+<div class="footer-legal">
+    <p>© 2026 Italian Luxury Essence - Made in Italy</p>
+    <a href="https://www.iubenda.com/privacy-policy/60532041" class="iubenda-white iubenda-noiframe iubenda-embed" title="Privacy Policy ">Privacy Policy</a>
+    <a href="https://www.iubenda.com/privacy-policy/60532041/cookie-policy" class="iubenda-white iubenda-noiframe iubenda-embed" title="Cookie Policy ">Cookie Policy</a>
+    <script type="text/javascript">(function (w,d) {var loader = function () {var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src="https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s,tag);}; if(w.addEventListener){w.addEventListener("load", loader, false);}else if(w.attachEvent){w.attachEvent("onload", loader);}else{w.onload = loader;}})(window, document);</script>
+</div>
+
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const userTel = urlParams.get('tel') || '393278278502';
+    const userName = urlParams.get('nome') || 'Benito';
+
+    async function loadCatalog() {
+        try {
+            const response = await fetch('listino.csv');
+            const csvData = await response.text();
+            Papa.parse(csvData, {
+                header: true,
+                skipEmptyLines: true,
+                complete: function(results) {
+                    displayItems(results.data);
+                    window.catalogData = results.data;
+                }
+            });
+        } catch (error) {
+            console.error("Errore nel caricamento del file listino.csv");
+        }
+    }
+
+    function displayItems(items) {
+        const catalog = document.getElementById('catalog');
+        catalog.innerHTML = '';
+        
+        items.forEach(item => {
+            if(!item.Codice) return;
+            const card = document.createElement('div');
+            card.className = 'card';
+            
+            const message = `Ciao ${userName}, vorrei ordinare il profumo: ${item.Nome} (Codice: ${item.Codice})`;
+            const waLink = `https://wa.me/${userTel}?text=${encodeURIComponent(message)}`;
+            
+            card.innerHTML = `
+                <div>
+                    <h3>${item.Nome}</h3>
+                    <p>Ispirato a: ${item.Ispirazione || 'Fragranza Esclusiva'}<br>Codice: ${item.Codice}</p>
+                </div>
+                <div>
+                    <div class="price">€${item.Prezzo}</div>
+                    <a href="${waLink}" class="btn-whatsapp" target="_blank">Ordina su WhatsApp</a>
+                </div>
+            `;
+            catalog.appendChild(card);
+        });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        const filtered = window.catalogData.filter(item => 
+            item.Nome.toLowerCase().includes(term) || 
+            (item.Ispirazione && item.Ispirazione.toLowerCase().includes(term)) ||
+            item.Codice.toLowerCase().includes(term)
+        );
+        displayItems(filtered);
+    });
+
+    loadCatalog();
+</script>
+
+</body>
+</html>
