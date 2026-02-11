@@ -26,41 +26,34 @@
         .cart-item { border-left: 4px solid var(--tortora); }
         .filter-active { background-color: var(--antracite) !important; color: var(--tortora-light) !important; border-color: var(--antracite) !important; }
 
-        .filter-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-        }
+        .filter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 
-        #waQuickBtn {
-            position: fixed;
-            bottom: 100px; /* Alzato per non sovrapporsi alla barra mobile */
-            right: 20px;
-            background-color: #25D366;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            z-index: 110; /* Sopra a tutto */
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        #waQuickBtn:active { transform: scale(0.9); }
+        /* MARQUEE */
+        .marquee-container { overflow: hidden; white-space: nowrap; background: #f0edea; padding: 12px 0; border-top: 1px solid #d1c7bc; border-bottom: 1px solid #d1c7bc; margin-bottom: 20px; }
+        .marquee-content { display: inline-block; animation: marquee-scroll 30s linear infinite; }
+        .marquee-item { display: inline-block; margin-right: 50px; font-size: 11px; font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.1em; }
+        @keyframes marquee-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        @keyframes pulse-gold {
-            0% { box-shadow: 0 0 0 0 rgba(189, 174, 155, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(189, 174, 155, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(189, 174, 155, 0); }
-        }
-        .animate-gold { animation: pulse-gold 2s infinite; }
-        .btn-remove { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background-color: #fee2e2; color: #ef4444; border-radius: 50%; font-weight: bold; }
+        /* WHATSAPP */
+        #waQuickBtn { position: fixed; bottom: 100px; right: 20px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 110; cursor: pointer; }
+
+        /* MODALE POPUP */
+        #welcomePopup { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
     </style>
 </head>
 <body class="bg-[#f8f7f5] text-[#333333] font-sans pb-40 lg:pb-0">
+
+    <div id="welcomePopup">
+        <div class="bg-white max-w-md w-full p-8 relative rounded-lg shadow-2xl text-center">
+            <button onclick="closePopup()" class="absolute top-4 right-4 text-2xl font-light">&times;</button>
+            <h2 class="text-sm font-black uppercase tracking-widest mb-6">QUESTO SITO FUNGE DA LISTINO INTERATTIVO</h2>
+            <div class="text-[12px] text-left space-y-4 text-gray-700 mb-8">
+                <p>1️⃣ <strong>Richiedere una consulenza Whatsapp</strong> (in merito all'acquisto, al formato e ai tuoi gusti)</p>
+                <p>2️⃣ <strong>Aggiungere già a carrello le tue Essenze Preferite</strong>, per poi inviarle al tuo referente su Whatsapp, al fine di velocizzare l'acquisto ed ottenere un OMAGGIO!</p>
+            </div>
+            <button onclick="closePopup()" class="w-full bg-[#333333] text-[#bdae9b] py-4 font-black uppercase text-[11px] tracking-widest">HO CAPITO, ENTRA</button>
+        </div>
+    </div>
 
     <header class="bg-[#333333] text-[#f4f4f2] p-6 shadow-xl text-center sticky top-0 z-50">
         <h1 class="text-xl md:text-2xl font-light uppercase tracking-[0.2em]">🇮🇹 Italian Luxury Essence</h1>
@@ -71,14 +64,7 @@
 
     <div class="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 p-4">
         <div class="lg:w-2/3">
-            <div class="bg-white border-2 border-dashed border-[#bdae9b] p-5 mb-6 text-center shadow-sm">
-                <h2 class="text-xs font-black uppercase tracking-widest text-[#333333] mb-3">QUESTO SITO FUNGE DA LISTINO INTERATTIVO</h2>
-                <div class="text-[11px] text-gray-600 space-y-3 leading-relaxed text-left max-w-md mx-auto">
-                    <p>1️⃣ <strong>Richiedere una consulenza Whatsapp</strong> (in merito all'acquisto, al formato e ai tuoi gusti)</p>
-                    <p>2️⃣ <strong>Aggiungere già a carrello le tue Essenze Preferite</strong>, per poi inviarle al tuo referente su Whatsapp, al fine di velocizzare l'acquisto ed ottenere un OMAGGIO!</p>
-                </div>
-            </div>
-
+            
             <div class="bg-white p-5 shadow-sm mb-6 sticky top-24 z-40 border border-gray-100">
                 <div class="filter-grid mb-4">
                     <button onclick="setFilter('format', 'all', this)" class="format-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Tutti</button>
@@ -106,6 +92,21 @@
                 </div>
             </div>
 
+            <div class="marquee-container">
+                <div class="marquee-content">
+                    <span class="marquee-item">🔥 MEGAMARE</span>
+                    <span class="marquee-item">🔥 BIANCO LATTE</span>
+                    <span class="marquee-item">🔥 BACCARAT ROUGE 540</span>
+                    <span class="marquee-item">🔥 NAXOS</span>
+                    <span class="marquee-item">🔥 ERBA PURA</span>
+                    <span class="marquee-item">🔥 BLACK AFGANO</span>
+                    <span class="marquee-item">🔥 KIRKÈ</span>
+                    <span class="marquee-item">🔥 MEGAMARE</span>
+                    <span class="marquee-item">🔥 BIANCO LATTE</span>
+                    <span class="marquee-item">🔥 BACCARAT ROUGE 540</span>
+                </div>
+            </div>
+
             <div id="productGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
         </div>
 
@@ -114,12 +115,13 @@
                 <h2 class="text-xs font-bold uppercase tracking-widest mb-6 border-b pb-4 text-gray-400">Riepilogo Scelte</h2>
                 <div id="cartList" class="space-y-3 mb-6 max-h-[450px] overflow-y-auto no-scrollbar"></div>
                 
-                <div id="promoBox" class="hidden bg-[#f4f1ee] p-4 mb-6 border border-[#d1c7bc]">
+                <div id="promoBox" class="hidden bg-[#f4f1ee] p-4 mb-4 border border-[#d1c7bc]">
                     <p id="promoText" class="text-[10px] font-bold text-[#8d8478] uppercase text-center"></p>
                     <button id="freebieBtn" onclick="startFreebieSelection()" class="w-full bg-[#8d8478] text-white py-3 mt-3 text-[10px] font-black uppercase hidden shadow-lg">SCEGLI OMAGGIO +</button>
                 </div>
 
                 <div class="border-t pt-4 text-center">
+                    <div id="savingCalc" class="hidden mb-2 text-[10px] font-bold text-green-600 uppercase bg-green-50 py-1 px-2 rounded"></div>
                     <span class="text-[10px] uppercase text-gray-400 font-bold tracking-widest">Totale Provvisorio</span>
                     <div class="choganTotalDisplay text-4xl font-light text-antracite">0.00 €</div>
                     <button id="mainActionBtn" onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 mt-4 font-black uppercase text-[11px] border-2 border-[#bdae9b]">
@@ -135,10 +137,8 @@
     </div>
 
     <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[100]">
-        <div id="autoPromoMsg" class="hidden bg-[#bdae9b] text-[#333333] text-center py-3 text-[9px] font-bold uppercase border-t border-white">
-            <span id="autoPromoText"></span>
-        </div>
-        <div class="bg-[#333333] text-white p-4 flex justify-between items-center shadow-2xl">
+        <div id="mobileSaving" class="hidden bg-green-600 text-white text-center py-1 text-[8px] font-bold uppercase"></div>
+        <div class="bg-[#333333] text-white p-4 flex justify-between items-center">
             <div onclick="toggleMobileCart()">
                 <span class="text-[9px] uppercase text-[#bdae9b]">Totale</span>
                 <span class="choganTotalDisplay text-xl font-light block">0.00 €</span>
@@ -160,7 +160,7 @@
         <div id="cartListMobile" class="flex-1 overflow-y-auto space-y-3 no-scrollbar"></div>
         <div class="border-t pt-6 text-center space-y-4">
             <div class="choganTotalDisplay text-4xl font-light">0.00 €</div>
-            <button id="mobileActionBtn" onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 font-black uppercase text-[11px] border-2 border-[#bdae9b]">INVIA WHATSAPP</button>
+            <button id="mobileActionBtn" onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 font-black uppercase text-[11px] border-2 border-[#bdae9b]">RICHIEDI CONSULENZA</button>
         </div>
     </div>
 
@@ -173,6 +173,8 @@
         let freebie = null;
         let currentFormat = 'all';
         let currentType = 'all';
+
+        function closePopup() { document.getElementById('welcomePopup').style.display = 'none'; }
 
         async function loadData() {
             try {
@@ -188,7 +190,6 @@
             rows.forEach(row => {
                 const col = row.split(';');
                 if (col.length < 13) return;
-
                 const nome = col[0].trim();
                 const isp = col[1].trim();
                 const genere = col[12] ? col[12].trim() : "Unisex";
@@ -197,11 +198,12 @@
                     if (cod && pr && pr.trim() !== "" && pr !== "-") {
                         let prezzo = parseFloat(pr.replace('€', '').replace(',', '.').trim());
                         if (!isNaN(prezzo)) {
-                            allItems.push({ cod: cod.trim(), nome, isp, genere, formato: form, prezzo });
+                            // Stima prezzo negozio (media) per calcolo risparmio
+                            let retail = (form.includes("15ml")) ? 45 : (form.includes("30ml") ? 75 : 130);
+                            allItems.push({ cod: cod.trim(), nome, isp, genere, formato: form, prezzo, retail });
                         }
                     }
                 };
-
                 add(col[4], col[5], "15ml");
                 add(col[6], col[7], "30ml");
                 add(col[8], col[9], "70ml");
@@ -212,7 +214,6 @@
 
         function applyFilters() {
             const search = document.getElementById('searchInput').value.toLowerCase();
-            
             let filtered = allItems.filter(p => {
                 const matchFormat = currentFormat === 'all' || p.formato.toLowerCase().includes(currentFormat.toLowerCase());
                 const matchType = currentType === 'all' || p.genere.toLowerCase() === currentType.toLowerCase();
@@ -220,20 +221,19 @@
                 return matchFormat && matchType && matchSearch;
             });
 
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = filtered.map(p => `
+            document.getElementById('productGrid').innerHTML = filtered.map(p => `
                 <div class="bg-white p-5 border border-gray-100 flex justify-between items-center shadow-sm">
                     <div class="flex-1">
                         <div class="flex gap-2 mb-2">
-                            <span class="text-[7px] font-black px-1.5 py-0.5 bg-zinc-100 text-zinc-500 rounded uppercase tracking-tighter">${p.formato}</span>
-                            <span class="text-[7px] font-black px-1.5 py-0.5 ${p.genere === 'Uomo' ? 'bg-blue-100 text-blue-600' : p.genere === 'Donna' ? 'bg-rose-100 text-rose-600' : 'bg-zinc-800 text-white'} rounded uppercase tracking-tighter">${p.genere}</span>
+                            <span class="text-[7px] font-black px-1.5 py-0.5 bg-zinc-100 text-zinc-500 rounded uppercase">${p.formato}</span>
+                            <span class="text-[7px] font-black px-1.5 py-0.5 ${p.genere === 'Uomo' ? 'bg-blue-100 text-blue-600' : p.genere === 'Donna' ? 'bg-rose-100 text-rose-600' : 'bg-zinc-800 text-white'} rounded uppercase">${p.genere}</span>
                         </div>
                         <h3 class="font-bold text-xs uppercase tracking-widest">${p.nome}</h3>
                         <p class="text-[9px] text-gray-400 italic">Ispirato a: ${p.isp}</p>
                         <p class="mt-1 font-light text-lg">${p.prezzo.toFixed(2)} €</p>
                     </div>
                     <button onclick="addToCart('${p.cod}')" class="bg-zinc-50 w-12 h-12 rounded-full text-2xl shadow-sm hover:bg-zinc-800 hover:text-white transition-colors">+</button>
-                </div>`).join('') || '<p class="col-span-full text-center py-10 text-gray-400 uppercase text-xs">Nessun risultato trovato</p>';
+                </div>`).join('') || '<p class="col-span-full text-center py-10 text-gray-400 uppercase text-xs">Nessun risultato</p>';
         }
 
         function setFilter(type, value, btn) {
@@ -265,16 +265,28 @@
 
         function updateUI() {
             const total = cart.reduce((s, p) => s + p.prezzo, 0);
+            const retailTotal = cart.reduce((s, p) => s + p.retail, 0);
+            const savings = retailTotal - total;
             const countPromo = cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length;
             const promoActive = countPromo >= 2;
             
-            const btnText = cart.length > 0 ? "INVIA LA TUA SELEZIONE!" : "RICHIEDI CONSULENZA WHATSAPP";
+            const btnText = cart.length > 0 ? "🤩 Ho aggiunto le mie Essenze, GUIDAMI all'acquisto!" : "RICHIEDI CONSULENZA WHATSAPP";
             document.getElementById('mainActionBtn').innerText = btnText;
             document.getElementById('mobileActionBtn').innerText = btnText;
 
+            // Calcolo Risparmio
+            if(cart.length > 0 && savings > 0) {
+                const saveMsg = `💰 Stai risparmiando circa ${savings.toFixed(0)}€ rispetto al negozio!`;
+                document.getElementById('savingCalc').innerText = saveMsg;
+                document.getElementById('savingCalc').classList.remove('hidden');
+                document.getElementById('mobileSaving').innerText = saveMsg;
+                document.getElementById('mobileSaving').classList.remove('hidden');
+            } else {
+                document.getElementById('savingCalc').classList.add('hidden');
+                document.getElementById('mobileSaving').classList.add('hidden');
+            }
+
             const promoMsg = promoActive ? "✨ PROMO ATTIVA: OMAGGIO SBLOCCATO!" : (countPromo === 1 ? "💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio!" : "");
-            document.getElementById('autoPromoMsg').classList.toggle('hidden', !promoMsg);
-            document.getElementById('autoPromoText').innerText = promoMsg;
             document.getElementById('promoBox').classList.toggle('hidden', !promoMsg);
             document.getElementById('promoText').innerText = promoMsg;
             document.getElementById('freebieBtn').classList.toggle('hidden', !promoActive || !!freebie);
@@ -293,8 +305,9 @@
         }
 
         function handleWhatsAppAction() {
-            let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei avere info in merito alle vostre essenze italiane.` : `*ECCO LA MIA LISTA PREFERITI*\n\n` + cart.map(p => `• ${p.nome} (${p.formato} - ${p.genere})`).join('\n');
+            let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei avere info in merito alle vostre essenze.` : `*ESSENZE PREFERITE AGGIUNTE*\n\n` + cart.map(p => `• ${p.nome} (${p.formato})`).join('\n');
             if(freebie) msg += `\n\n🎁 *OMAGGIO SCELTO:* ${freebie.nome} (30ml)`;
+            if(cart.length > 0) msg += `\n\nMi guideresti all'acquisto?`;
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
