@@ -120,7 +120,7 @@
                 <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-lg">
                     <p class="text-[11px] leading-relaxed text-amber-900 font-medium text-center">
                         ⏳ <strong>PROMO ATTIVA per i prossimi 3 giorni:</strong><br>
-                        AGGIUNGI ALLA LISTA N.2 PRODOTTI DA 50ml o 70ml, e ricevi in <strong>OMAGGIO</strong> una essenza da 30ml a tua scelta! 😳
+                        AGGIUNGI A CARRELLO N.2 PRODOTTI DA 50ml o 70ml, e ricevi in <strong>OMAGGIO</strong> una essenza da 30ml a tua scelta! 😳
                     </p>
                 </div>
             </div>
@@ -206,6 +206,8 @@
                 <div class="text-center md:text-left">
                     <p class="text-[10px] uppercase tracking-widest font-bold mb-2">🇮🇹 Italian Luxury Essence</p>
                     <p class="text-[9px] text-gray-400 leading-relaxed max-w-sm">
+                        Sito gestito da <b>Benito Pellegrino</b> (Cod. Inc. BEA247).<br>
+                        Contatti: <a href="mailto:benitopellegrino@gmail.com" class="text-gray-300 hover:text-white underline">benitopellegrino@gmail.com</a><br><br>
                         Questo sito è un listino interattivo a scopo illustrativo. 
                         <b>Non si effettuano vendite dirette su questa piattaforma.</b> 
                         Gli ordini e i pagamenti vengono perfezionati tramite i canali ufficiali Chogan Group SpA.
@@ -220,7 +222,13 @@
                 </div>
             </div>
 
-            <div class="border-t border-white/10 pt-8 text-center">
+            <div class="border-t border-white/10 pt-8 text-center mb-6">
+                <p class="text-[8px] text-gray-400 leading-relaxed uppercase tracking-widest max-w-4xl mx-auto italic">
+                    <b>NOTA SUI MARCHI:</b> I nomi dei marchi e i riferimenti ai profumi originali sono utilizzati esclusivamente a scopo descrittivo, per facilitare l'individuazione della fragranza (Art. 21 c.1 lett. C - D.Lgs 30 febbraio 2005, n.30). Tutti i marchi e i nomi citati appartengono ai rispettivi proprietari. Acquistando un prodotto Chogan, si acquista una fragranza ORIGINALE a marchio CHOGAN, prodotta e confezionata nei propri stabilimenti.
+                </p>
+            </div>
+
+            <div class="text-center">
                 <p class="text-[8px] text-gray-500 leading-relaxed uppercase tracking-widest max-w-4xl mx-auto">
                     Questo sito non fa parte del sito Facebook o Facebook Inc. Inoltre, questo sito NON è approvato da Facebook in alcun modo. FACEBOOK è un marchio registrato di FACEBOOK, Inc. 
                     Allo stesso modo, questo sito non fa parte del sito Google o Google Inc. e non è approvato da Google. Google è un marchio registrato di Google, LLC.
@@ -311,7 +319,10 @@
             updateUI();
         }
 
-        function removeFreebie() { freebie = null; updateUI(); }
+        function removeFreebie() { 
+            freebie = null; 
+            updateUI(); 
+        }
 
         function updateUI() {
             const total = cart.reduce((s, p) => s + p.prezzo, 0);
@@ -346,9 +357,13 @@
             } else {
                 listHTML = cart.map((p, i) => `
                     <div class="cart-item bg-white p-3 border mb-2 flex justify-between items-center rounded-lg text-[10px]">
-                        <div><p class="font-bold uppercase">${p.nome}</p><p class="text-gray-400">${p.formato}</p></div>
+                        <div>
+                            <p class="font-bold uppercase">${p.nome}</p>
+                            <p class="text-gray-400">${p.formato}</p>
+                        </div>
                         <button onclick="removeFromCart(${i})" class="btn-remove">✕</button>
                     </div>`).join('');
+                
                 if (freebie) {
                     listHTML += `
                         <div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2">
@@ -357,8 +372,10 @@
                         </div>`;
                 }
             }
+
             document.getElementById('cartList').innerHTML = listHTML;
             document.getElementById('cartListMobile').innerHTML = listHTML;
+
             document.querySelectorAll('.choganTotalDisplay').forEach(el => el.innerText = total.toFixed(2) + " €");
             document.getElementById('cartBadge').innerText = cart.length;
         }
@@ -370,7 +387,15 @@
         }
 
         function toggleMobileCart() { document.getElementById('mobileCartPanel').classList.toggle('open'); }
-        function startFreebieSelection() { document.body.classList.add('choosing-freebie-mode'); document.getElementById('selectionBanner').classList.remove('hidden'); if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); window.scrollTo({top: 0, behavior: 'smooth'}); }
+        
+        function startFreebieSelection() { 
+            document.body.classList.add('choosing-freebie-mode'); 
+            document.getElementById('selectionBanner').classList.remove('hidden'); 
+            if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); 
+            setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); 
+            window.scrollTo({top: 0, behavior: 'smooth'}); 
+        }
+        
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         loadData();
     </script>
