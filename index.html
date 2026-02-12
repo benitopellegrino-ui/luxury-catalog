@@ -201,21 +201,31 @@
     </div>
 
     <footer class="bg-[#333333] text-[#f4f4f2] p-8 mt-12 border-t border-[#bdae9b]/30">
-        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-center md:text-left">
-                <p class="text-[10px] uppercase tracking-widest font-bold mb-2">🇮🇹 Italian Luxury Essence</p>
-                <p class="text-[9px] text-gray-400 leading-relaxed max-w-sm">
-                    Questo sito è un listino interattivo a scopo illustrativo. 
-                    <b>Non si effettuano vendite dirette su questa piattaforma.</b> 
-                    Gli ordini e i pagamenti vengono perfezionati tramite i canali ufficiali Chogan Group SpA.
-                </p>
+        <div class="max-w-[1400px] mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 mb-8">
+                <div class="text-center md:text-left">
+                    <p class="text-[10px] uppercase tracking-widest font-bold mb-2">🇮🇹 Italian Luxury Essence</p>
+                    <p class="text-[9px] text-gray-400 leading-relaxed max-w-sm">
+                        Questo sito è un listino interattivo a scopo illustrativo. 
+                        <b>Non si effettuano vendite dirette su questa piattaforma.</b> 
+                        Gli ordini e i pagamenti vengono perfezionati tramite i canali ufficiali Chogan Group SpA.
+                    </p>
+                </div>
+                
+                <div class="flex flex-wrap justify-center gap-4 text-[9px] uppercase tracking-tighter font-bold">
+                    <a href="https://www.iubenda.com/termini-e-condizioni/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Termini e Condizioni">Termini e Condizioni</a>
+                    <a href="https://www.iubenda.com/privacy-policy/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+                    <a href="#" class="iubenda-cs-preferences-link hover:text-[#bdae9b]">Gestisci Cookie</a>
+                    <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" class="hover:text-[#bdae9b]">Piattaforma ODR</a>
+                </div>
             </div>
-            
-            <div class="flex flex-wrap justify-center gap-4 text-[9px] uppercase tracking-tighter font-bold">
-                <a href="https://www.iubenda.com/termini-e-condizioni/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Termini e Condizioni">Termini e Condizioni</a>
-                <a href="https://www.iubenda.com/privacy-policy/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Privacy Policy">Privacy Policy</a>
-                <a href="#" class="iubenda-cs-preferences-link hover:text-[#bdae9b]">Gestisci Cookie</a>
-                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" class="hover:text-[#bdae9b]">Piattaforma ODR</a>
+
+            <div class="border-t border-white/10 pt-8 text-center">
+                <p class="text-[8px] text-gray-500 leading-relaxed uppercase tracking-widest max-w-4xl mx-auto">
+                    Questo sito non fa parte del sito Facebook o Facebook Inc. Inoltre, questo sito NON è approvato da Facebook in alcun modo. FACEBOOK è un marchio registrato di FACEBOOK, Inc. 
+                    Allo stesso modo, questo sito non fa parte del sito Google o Google Inc. e non è approvato da Google. Google è un marchio registrato di Google, LLC.
+                    Le testimonianze e gli esempi utilizzati sono risultati eccezionali, non riflettono l'esperienza media e non sono destinati a rappresentare o garantire che chiunque otterrà gli stessi risultati.
+                </p>
             </div>
         </div>
     </footer>
@@ -296,30 +306,23 @@
 
         function removeFromCart(index) {
             cart.splice(index, 1);
-            // Controlla se la promo è ancora valida
             const countPromo = cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length;
             if (countPromo < 2) freebie = null;
             updateUI();
         }
 
-        function removeFreebie() { 
-            freebie = null; 
-            updateUI(); 
-        }
+        function removeFreebie() { freebie = null; updateUI(); }
 
         function updateUI() {
-            // Calcoli
             const total = cart.reduce((s, p) => s + p.prezzo, 0);
             const retailTotal = cart.reduce((s, p) => s + p.retail, 0);
             const countPromo = cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length;
             const promoActive = countPromo >= 2;
 
-            // LOGICA TESTO BOTTONI (Corretta)
             const btnText = cart.length > 0 ? "🤩 Ho scelto, GUIDAMI all'acquisto!" : "RICHIEDI CONSULENZA WHATSAPP";
             document.getElementById('mainActionBtn').innerText = btnText;
             document.getElementById('mobileActionBtn').innerText = btnText;
 
-            // Mostra/Nascondi Risparmio
             if(cart.length > 0) {
                 const saveMsg = `💰 Risparmio stimato: circa ${(retailTotal - total).toFixed(0)}€!`;
                 document.getElementById('savingCalc').innerText = saveMsg; document.getElementById('savingCalc').classList.remove('hidden');
@@ -331,27 +334,21 @@
                 document.getElementById('mobileIncentive').classList.add('hidden');
             }
 
-            // Logica Promo e Omaggio
             const promoMsg = promoActive ? "✨ PROMO ATTIVA: OMAGGIO SBLOCCATO!" : (countPromo === 1 ? "💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio!" : "");
             document.getElementById('promoBox').classList.toggle('hidden', !promoMsg);
             document.getElementById('promoText').innerText = promoMsg;
             document.getElementById('freebieBtn').classList.toggle('hidden', !promoActive || !!freebie);
             document.getElementById('quickFreebieBtn').classList.toggle('hidden', !promoActive || !!freebie);
 
-            // Generazione HTML Lista Carrello (Unificata per evitare bug di copia)
             let listHTML = "";
             if (cart.length === 0) {
                 listHTML = '<p class="text-center py-5 text-gray-400 uppercase text-[10px]">Lista vuota</p>';
             } else {
                 listHTML = cart.map((p, i) => `
                     <div class="cart-item bg-white p-3 border mb-2 flex justify-between items-center rounded-lg text-[10px]">
-                        <div>
-                            <p class="font-bold uppercase">${p.nome}</p>
-                            <p class="text-gray-400">${p.formato}</p>
-                        </div>
+                        <div><p class="font-bold uppercase">${p.nome}</p><p class="text-gray-400">${p.formato}</p></div>
                         <button onclick="removeFromCart(${i})" class="btn-remove">✕</button>
                     </div>`).join('');
-                
                 if (freebie) {
                     listHTML += `
                         <div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2">
@@ -360,12 +357,8 @@
                         </div>`;
                 }
             }
-
-            // Inietta l'HTML separatamente (RISOLVE IL BUG CANCELLAZIONE)
             document.getElementById('cartList').innerHTML = listHTML;
             document.getElementById('cartListMobile').innerHTML = listHTML;
-
-            // Aggiorna totali e badge
             document.querySelectorAll('.choganTotalDisplay').forEach(el => el.innerText = total.toFixed(2) + " €");
             document.getElementById('cartBadge').innerText = cart.length;
         }
@@ -377,15 +370,7 @@
         }
 
         function toggleMobileCart() { document.getElementById('mobileCartPanel').classList.toggle('open'); }
-        
-        function startFreebieSelection() { 
-            document.body.classList.add('choosing-freebie-mode'); 
-            document.getElementById('selectionBanner').classList.remove('hidden'); 
-            if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); 
-            setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); 
-            window.scrollTo({top: 0, behavior: 'smooth'}); 
-        }
-        
+        function startFreebieSelection() { document.body.classList.add('choosing-freebie-mode'); document.getElementById('selectionBanner').classList.remove('hidden'); if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); window.scrollTo({top: 0, behavior: 'smooth'}); }
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         loadData();
     </script>
