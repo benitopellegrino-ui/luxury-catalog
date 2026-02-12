@@ -286,15 +286,12 @@
             document.getElementById('mainActionBtn').innerText = btnText;
             document.getElementById('mobileActionBtn').innerText = btnText;
 
-            // Logica Risparmio & Incentivo
             if(cart.length > 0) {
                 const saveMsg = `💰 Risparmio stimato: circa ${savings.toFixed(0)}€ rispetto al negozio!`;
                 document.getElementById('savingCalc').innerText = saveMsg;
                 document.getElementById('savingCalc').classList.remove('hidden');
                 document.getElementById('mobileSaving').innerText = saveMsg;
                 document.getElementById('mobileSaving').classList.remove('hidden');
-
-                // Mostra incentivo solo se ne manca 1 (countPromo === 1)
                 const isIncentiveVisible = countPromo === 1;
                 document.getElementById('mobileIncentive').classList.toggle('hidden', !isIncentiveVisible);
             } else {
@@ -336,5 +333,27 @@
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         loadData();
     </script>
+
+    <footer class="bg-[#333333] text-[#f4f4f2] p-8 mt-12 border-t border-[#bdae9b]/30">
+        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <p class="text-[10px] uppercase tracking-widest font-bold mb-2">🇮🇹 Italian Luxury Essence</p>
+                <p class="text-[9px] text-gray-400 leading-relaxed max-w-sm">
+                    Questo sito è un listino interattivo a scopo illustrativo. 
+                    <b>Non si effettuano vendite dirette su questa piattaforma.</b> 
+                    Gli ordini e i pagamenti vengono perfezionati tramite i canali ufficiali Chogan Group SpA.
+                </p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 text-[9px] uppercase tracking-tighter font-bold">
+                <a href="https://www.iubenda.com/termini-e-condizioni/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Termini e Condizioni">Termini e Condizioni</a>
+                <a href="https://www.iubenda.com/privacy-policy/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" class="hover:text-[#bdae9b]">Piattaforma ODR</a>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript">(function (w, d) { var loader = function () { var s = d.createElement("script"), tag = d.body; s.src = "https://cdn.iubenda.com/iubenda.js"; tag.appendChild(s); }; if (w.addEventListener) { w.addEventListener("load", loader, false); } else if (w.attachEvent) { w.attachEvent("onload", loader); } else { w.onload = loader; } })(window, document);</script>
+
 </body>
 </html>
