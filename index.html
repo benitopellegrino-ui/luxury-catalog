@@ -8,8 +8,6 @@
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
-        
-        // Imposta i valori di default (negati fino a prova contraria)
         gtag('consent', 'default', {
             'ad_storage': 'denied',
             'analytics_storage': 'denied',
@@ -30,7 +28,7 @@
         "lang":"it",
         "siteId":3933560,
         "cookiePolicyId":60532041, 
-        "preferenceLink": { "enabled": false }, // Rimuove lo scudo/icona di preferenza
+        "preferenceLink": { "enabled": false }, // Disabilita l'icona flottante
         "banner":{ 
             "acceptButtonDisplay":true,
             "customizeButtonDisplay":true,
@@ -66,7 +64,6 @@
         #waQuickBtn { position: fixed; bottom: 120px; right: 20px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 110; cursor: pointer; transition: transform 0.2s; }
         #waQuickBtn:active { transform: scale(0.9); }
 
-        /* MODALE POPUP */
         #welcomePopup { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
 
         @keyframes pulse-gold {
@@ -77,11 +74,16 @@
         .animate-gold { animation: pulse-gold 2s infinite; }
         .btn-remove { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background-color: #fee2e2; color: #ef4444; border-radius: 50%; font-weight: bold; }
 
-        /* RIMOZIONE FORZATA ICONA IUBENDA PER SMARTPHONE */
+        /* RIMOZIONE TOTALE E DEFINITIVA ICONA IUBENDA */
         #iubenda-cs-preference-link-container, 
         .iubenda-cs-v-preference-link, 
-        .iubenda-cs-preference-link { 
+        .iubenda-cs-preference-link,
+        .iubenda-ib-v-preference-link,
+        #iubenda-cs-button { 
             display: none !important; 
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
         }
     </style>
 </head>
@@ -182,10 +184,7 @@
 
     <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[100]">
         <div id="mobileSaving" class="hidden bg-green-600 text-white text-center py-1.5 text-[8px] font-bold uppercase border-b border-green-500"></div>
-        <div id="mobileIncentive" class="hidden bg-amber-500 text-white text-center py-1.5 text-[8px] font-bold uppercase">
-            💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio da 30ml!
-        </div>
-        
+        <div id="mobileIncentive" class="hidden bg-amber-500 text-white text-center py-1.5 text-[8px] font-bold uppercase">💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio!</div>
         <div class="bg-[#333333] text-white p-4 flex justify-between items-center shadow-2xl">
             <div onclick="toggleMobileCart()">
                 <span class="text-[9px] uppercase text-[#bdae9b]">Totale</span>
@@ -212,25 +211,33 @@
         </div>
     </div>
 
+    <footer class="bg-[#333333] text-[#f4f4f2] p-8 mt-12 border-t border-[#bdae9b]/30">
+        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <p class="text-[10px] uppercase tracking-widest font-bold mb-2">🇮🇹 Italian Luxury Essence</p>
+                <p class="text-[9px] text-gray-400 leading-relaxed max-w-sm">
+                    Questo sito è un listino interattivo a scopo illustrativo. 
+                    <b>Non si effettuano vendite dirette su questa piattaforma.</b> 
+                    Gli ordini e i pagamenti vengono perfezionati tramite i canali ufficiali Chogan Group SpA.
+                </p>
+            </div>
+            
+            <div class="flex flex-wrap justify-center gap-4 text-[9px] uppercase tracking-tighter font-bold">
+                <a href="https://www.iubenda.com/termini-e-condizioni/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Termini e Condizioni">Termini e Condizioni</a>
+                <a href="https://www.iubenda.com/privacy-policy/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+                <a href="#" class="iubenda-cs-preferences-link hover:text-[#bdae9b]">Gestisci Cookie</a>
+                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" class="hover:text-[#bdae9b]">Piattaforma ODR</a>
+            </div>
+        </div>
+    </footer>
+
     <script>
         const WHATSAPP_NUMBER = "393275428780"; 
         const COLLAB_NAME = new URLSearchParams(window.location.search).get('nome') || "Referente";
-
-        let allItems = [];
-        let cart = [];
-        let freebie = null;
-        let currentFormat = 'all';
-        let currentType = 'all';
+        let allItems = [], cart = [], freebie = null, currentFormat = 'all', currentType = 'all';
 
         function closePopup() { document.getElementById('welcomePopup').style.display = 'none'; }
-
-        async function loadData() {
-            try {
-                const res = await fetch('listino.csv');
-                const data = await res.text();
-                parseCSV(data);
-            } catch (e) { console.error("Errore CSV"); }
-        }
+        async function loadData() { try { const res = await fetch('listino.csv'); const data = await res.text(); parseCSV(data); } catch (e) { console.error("Errore CSV"); } }
 
         function parseCSV(data) {
             allItems = [];
@@ -238,10 +245,7 @@
             rows.forEach(row => {
                 const col = row.split(';');
                 if (col.length < 13) return;
-                const nome = col[0].trim();
-                const isp = col[1].trim();
-                const genere = col[12] ? col[12].trim() : "Unisex";
-
+                const nome = col[0].trim(), isp = col[1].trim(), genere = col[12] ? col[12].trim() : "Unisex";
                 const add = (cod, pr, form) => {
                     if (cod && pr && pr.trim() !== "" && pr !== "-") {
                         let prezzo = parseFloat(pr.replace('€', '').replace(',', '.').trim());
@@ -251,10 +255,7 @@
                         }
                     }
                 };
-                add(col[4], col[5], "15ml");
-                add(col[6], col[7], "30ml");
-                add(col[8], col[9], "70ml");
-                add(col[10], col[11], "50ml Luxury");
+                add(col[4], col[5], "15ml"); add(col[6], col[7], "30ml"); add(col[8], col[9], "70ml"); add(col[10], col[11], "50ml Luxury");
             });
             applyFilters();
         }
@@ -267,7 +268,6 @@
                 const matchSearch = !search || p.nome.toLowerCase().includes(search) || p.isp.toLowerCase().includes(search);
                 return matchFormat && matchType && matchSearch;
             });
-
             document.getElementById('productGrid').innerHTML = filtered.map(p => `
                 <div class="bg-white p-5 border border-gray-100 flex justify-between items-center shadow-sm">
                     <div class="flex-1">
@@ -284,69 +284,41 @@
         }
 
         function setFilter(type, value, btn) {
-            if(type === 'format') {
-                currentFormat = value;
-                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('filter-active'));
-            } else {
-                currentType = value;
-                document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('filter-active'));
-            }
-            btn.classList.add('filter-active');
-            applyFilters();
+            if(type === 'format') { currentFormat = value; document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('filter-active')); } 
+            else { currentType = value; document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('filter-active')); }
+            btn.classList.add('filter-active'); applyFilters();
         }
 
         function addToCart(codice) {
             const item = allItems.find(p => p.cod === codice);
             if (document.body.classList.contains('choosing-freebie-mode')) {
-                if (item.formato === "30ml") {
-                    freebie = item;
-                    document.body.classList.remove('choosing-freebie-mode');
-                    document.getElementById('selectionBanner').classList.add('hidden');
-                    updateUI();
-                } else alert("Scegli un 30ml come omaggio!");
+                if (item.formato === "30ml") { freebie = item; document.body.classList.remove('choosing-freebie-mode'); document.getElementById('selectionBanner').classList.add('hidden'); updateUI(); } 
+                else alert("Scegli un 30ml come omaggio!");
                 return;
             }
-            cart.push(item);
-            updateUI();
+            cart.push(item); updateUI();
         }
 
         function updateUI() {
             const total = cart.reduce((s, p) => s + p.prezzo, 0);
             const retailTotal = cart.reduce((s, p) => s + p.retail, 0);
-            const savings = retailTotal - total;
             const countPromo = cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length;
             const promoActive = countPromo >= 2;
-            
-            const btnText = cart.length > 0 ? "🤩 Ho aggiunto le mie Essenze, GUIDAMI all'acquisto!" : "RICHIEDI CONSULENZA WHATSAPP";
+            const btnText = cart.length > 0 ? "🤩 Ho scelto, GUIDAMI all'acquisto!" : "RICHIEDI CONSULENZA WHATSAPP";
             document.getElementById('mainActionBtn').innerText = btnText;
             document.getElementById('mobileActionBtn').innerText = btnText;
-
             if(cart.length > 0) {
-                const saveMsg = `💰 Risparmio stimato: circa ${savings.toFixed(0)}€ rispetto al negozio!`;
-                document.getElementById('savingCalc').innerText = saveMsg;
-                document.getElementById('savingCalc').classList.remove('hidden');
-                document.getElementById('mobileSaving').innerText = saveMsg;
-                document.getElementById('mobileSaving').classList.remove('hidden');
-                const isIncentiveVisible = countPromo === 1;
-                document.getElementById('mobileIncentive').classList.toggle('hidden', !isIncentiveVisible);
-            } else {
-                document.getElementById('savingCalc').classList.add('hidden');
-                document.getElementById('mobileSaving').classList.add('hidden');
-                document.getElementById('mobileIncentive').classList.add('hidden');
-            }
-
+                const saveMsg = `💰 Risparmio stimato: circa ${(retailTotal - total).toFixed(0)}€!`;
+                document.getElementById('savingCalc').innerText = saveMsg; document.getElementById('savingCalc').classList.remove('hidden');
+                document.getElementById('mobileSaving').innerText = saveMsg; document.getElementById('mobileSaving').classList.remove('hidden');
+                document.getElementById('mobileIncentive').classList.toggle('hidden', countPromo !== 1);
+            } else { document.getElementById('savingCalc', 'mobileSaving', 'mobileIncentive').forEach(id => document.getElementById(id)?.classList.add('hidden')); }
             const promoMsg = promoActive ? "✨ PROMO ATTIVA: OMAGGIO SBLOCCATO!" : (countPromo === 1 ? "💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio!" : "");
             document.getElementById('promoBox').classList.toggle('hidden', !promoMsg);
             document.getElementById('promoText').innerText = promoMsg;
             document.getElementById('freebieBtn').classList.toggle('hidden', !promoActive || !!freebie);
             document.getElementById('quickFreebieBtn').classList.toggle('hidden', !promoActive || !!freebie);
-
-            const listHTML = cart.map((p, i) => `
-                <div class="cart-item bg-white p-3 border mb-2 flex justify-between items-center rounded-lg text-[10px]">
-                    <div><p class="font-bold uppercase">${p.nome}</p><p class="text-gray-400">${p.formato} - ${p.genere}</p></div>
-                    <button onclick="removeFromCart(${i})" class="btn-remove">✕</button>
-                </div>`).join('') + (freebie ? `<div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2"><span>🎁 <b>OMAGGIO:</b> ${freebie.nome} (30ml)</span><button onclick="removeFreebie()" class="text-red-500 font-bold">✕</button></div>` : '');
-            
+            const listHTML = cart.map((p, i) => `<div class="cart-item bg-white p-3 border mb-2 flex justify-between items-center rounded-lg text-[10px]"><div><p class="font-bold uppercase">${p.nome}</p><p class="text-gray-400">${p.formato}</p></div><button onclick="removeFromCart(${i})" class="btn-remove">✕</button></div>`).join('') + (freebie ? `<div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2"><span>🎁 <b>OMAGGIO:</b> ${freebie.nome}</span><button onclick="removeFreebie()" class="text-red-500">✕</button></div>` : '');
             document.getElementById('cartList').innerHTML = listHTML || '<p class="text-center py-5 text-gray-400 uppercase text-[10px]">Lista vuota</p>';
             document.getElementById('cartListMobile').innerHTML = document.getElementById('cartList').innerHTML;
             document.querySelectorAll('.choganTotalDisplay').forEach(el => el.innerText = total.toFixed(2) + " €");
@@ -354,9 +326,8 @@
         }
 
         function handleWhatsAppAction() {
-            let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei avere info in merito alle vostre essenze.` : `*ESSENZE PREFERITE AGGIUNTE*\n\n` + cart.map(p => `• ${p.nome} (${p.formato})`).join('\n');
-            if(freebie) msg += `\n\n🎁 *OMAGGIO SCELTO:* ${freebie.nome} (30ml)`;
-            if(cart.length > 0) msg += `\n\nMi guideresti all'acquisto?`;
+            let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei info.` : `*ESSENZE PREFERITE*\n\n` + cart.map(p => `• ${p.nome} (${p.formato})`).join('\n');
+            if(freebie) msg += `\n\n🎁 *OMAGGIO:* ${freebie.nome}`;
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
@@ -364,31 +335,10 @@
         function removeFreebie() { freebie = null; updateUI(); }
         function toggleMobileCart() { document.getElementById('mobileCartPanel').classList.toggle('open'); }
         function startFreebieSelection() { document.body.classList.add('choosing-freebie-mode'); document.getElementById('selectionBanner').classList.remove('hidden'); if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); window.scrollTo({top: 0, behavior: 'smooth'}); }
-        
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         loadData();
     </script>
 
-    <footer class="bg-[#333333] text-[#f4f4f2] p-8 mt-12 border-t border-[#bdae9b]/30">
-        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-center md:text-left">
-                <p class="text-[10px] uppercase tracking-widest font-bold mb-2">🇮🇹 Italian Luxury Essence</p>
-                <p class="text-[9px] text-gray-400 leading-relaxed max-w-sm">
-                    Questo sito è un listino interattivo a scopo illustrativo. 
-                    <b>Non si effettuano vendite dirette su questa piattaforma.</b> 
-                    Gli ordini e i pagamenti vengono perfezionati tramite i canali ufficiali Chogan Group SpA.
-                </p>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-4 text-[9px] uppercase tracking-tighter font-bold">
-                <a href="https://www.iubenda.com/termini-e-condizioni/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Termini e Condizioni">Termini e Condizioni</a>
-                <a href="https://www.iubenda.com/privacy-policy/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Privacy Policy">Privacy Policy</a>
-                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" class="hover:text-[#bdae9b]">Piattaforma ODR</a>
-            </div>
-        </div>
-    </footer>
-
     <script type="text/javascript">(function (w, d) { var loader = function () { var s = d.createElement("script"), tag = d.body; s.src = "https://cdn.iubenda.com/iubenda.js"; tag.appendChild(s); }; if (w.addEventListener) { w.addEventListener("load", loader, false); } else if (w.attachEvent) { w.attachEvent("onload", loader); } else { w.onload = loader; } })(window, document);</script>
-
 </body>
 </html>
