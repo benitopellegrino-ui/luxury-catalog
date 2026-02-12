@@ -59,7 +59,7 @@
         .marquee-item { display: inline-block; margin-right: 50px; font-size: 11px; font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.1em; }
         @keyframes marquee-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* WHATSAPP - Spostato un po' più in alto per non cozzare con iubenda */
+        /* WHATSAPP */
         #waQuickBtn { position: fixed; bottom: 140px; right: 20px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 110; cursor: pointer; transition: transform 0.2s; }
         #waQuickBtn:active { transform: scale(0.9); }
 
@@ -71,7 +71,7 @@
             100% { box-shadow: 0 0 0 0 rgba(189, 174, 155, 0); }
         }
         .animate-gold { animation: pulse-gold 2s infinite; }
-        .btn-remove { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background-color: #fee2e2; color: #ef4444; border-radius: 50%; font-weight: bold; }
+        .btn-remove { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background-color: #fee2e2; color: #ef4444; border-radius: 50%; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body class="bg-[#f8f7f5] text-[#333333] font-sans pb-40 lg:pb-0">
@@ -281,35 +281,91 @@
         function addToCart(codice) {
             const item = allItems.find(p => p.cod === codice);
             if (document.body.classList.contains('choosing-freebie-mode')) {
-                if (item.formato === "30ml") { freebie = item; document.body.classList.remove('choosing-freebie-mode'); document.getElementById('selectionBanner').classList.add('hidden'); updateUI(); } 
+                if (item.formato === "30ml") { 
+                    freebie = item; 
+                    document.body.classList.remove('choosing-freebie-mode'); 
+                    document.getElementById('selectionBanner').classList.add('hidden'); 
+                    updateUI(); 
+                } 
                 else alert("Scegli un 30ml come omaggio!");
                 return;
             }
-            cart.push(item); updateUI();
+            cart.push(item); 
+            updateUI();
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            // Controlla se la promo è ancora valida
+            const countPromo = cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length;
+            if (countPromo < 2) freebie = null;
+            updateUI();
+        }
+
+        function removeFreebie() { 
+            freebie = null; 
+            updateUI(); 
         }
 
         function updateUI() {
+            // Calcoli
             const total = cart.reduce((s, p) => s + p.prezzo, 0);
             const retailTotal = cart.reduce((s, p) => s + p.retail, 0);
             const countPromo = cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length;
             const promoActive = countPromo >= 2;
+
+            // LOGICA TESTO BOTTONI (Corretta)
             const btnText = cart.length > 0 ? "🤩 Ho scelto, GUIDAMI all'acquisto!" : "RICHIEDI CONSULENZA WHATSAPP";
             document.getElementById('mainActionBtn').innerText = btnText;
             document.getElementById('mobileActionBtn').innerText = btnText;
+
+            // Mostra/Nascondi Risparmio
             if(cart.length > 0) {
                 const saveMsg = `💰 Risparmio stimato: circa ${(retailTotal - total).toFixed(0)}€!`;
                 document.getElementById('savingCalc').innerText = saveMsg; document.getElementById('savingCalc').classList.remove('hidden');
                 document.getElementById('mobileSaving').innerText = saveMsg; document.getElementById('mobileSaving').classList.remove('hidden');
                 document.getElementById('mobileIncentive').classList.toggle('hidden', countPromo !== 1);
-            } else { document.getElementById('savingCalc', 'mobileSaving', 'mobileIncentive').forEach(id => document.getElementById(id)?.classList.add('hidden')); }
+            } else { 
+                document.getElementById('savingCalc').classList.add('hidden');
+                document.getElementById('mobileSaving').classList.add('hidden');
+                document.getElementById('mobileIncentive').classList.add('hidden');
+            }
+
+            // Logica Promo e Omaggio
             const promoMsg = promoActive ? "✨ PROMO ATTIVA: OMAGGIO SBLOCCATO!" : (countPromo === 1 ? "💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio!" : "");
             document.getElementById('promoBox').classList.toggle('hidden', !promoMsg);
             document.getElementById('promoText').innerText = promoMsg;
             document.getElementById('freebieBtn').classList.toggle('hidden', !promoActive || !!freebie);
             document.getElementById('quickFreebieBtn').classList.toggle('hidden', !promoActive || !!freebie);
-            const listHTML = cart.map((p, i) => `<div class="cart-item bg-white p-3 border mb-2 flex justify-between items-center rounded-lg text-[10px]"><div><p class="font-bold uppercase">${p.nome}</p><p class="text-gray-400">${p.formato}</p></div><button onclick="removeFromCart(${i})" class="btn-remove">✕</button></div>`).join('') + (freebie ? `<div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2"><span>🎁 <b>OMAGGIO:</b> ${freebie.nome}</span><button onclick="removeFreebie()" class="text-red-500">✕</button></div>` : '');
-            document.getElementById('cartList').innerHTML = listHTML || '<p class="text-center py-5 text-gray-400 uppercase text-[10px]">Lista vuota</p>';
-            document.getElementById('cartListMobile').innerHTML = document.getElementById('cartList').innerHTML;
+
+            // Generazione HTML Lista Carrello (Unificata per evitare bug di copia)
+            let listHTML = "";
+            if (cart.length === 0) {
+                listHTML = '<p class="text-center py-5 text-gray-400 uppercase text-[10px]">Lista vuota</p>';
+            } else {
+                listHTML = cart.map((p, i) => `
+                    <div class="cart-item bg-white p-3 border mb-2 flex justify-between items-center rounded-lg text-[10px]">
+                        <div>
+                            <p class="font-bold uppercase">${p.nome}</p>
+                            <p class="text-gray-400">${p.formato}</p>
+                        </div>
+                        <button onclick="removeFromCart(${i})" class="btn-remove">✕</button>
+                    </div>`).join('');
+                
+                if (freebie) {
+                    listHTML += `
+                        <div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2">
+                            <span>🎁 <b>OMAGGIO:</b> ${freebie.nome}</span>
+                            <button onclick="removeFreebie()" class="text-red-500 font-bold px-2">✕</button>
+                        </div>`;
+                }
+            }
+
+            // Inietta l'HTML separatamente (RISOLVE IL BUG CANCELLAZIONE)
+            document.getElementById('cartList').innerHTML = listHTML;
+            document.getElementById('cartListMobile').innerHTML = listHTML;
+
+            // Aggiorna totali e badge
             document.querySelectorAll('.choganTotalDisplay').forEach(el => el.innerText = total.toFixed(2) + " €");
             document.getElementById('cartBadge').innerText = cart.length;
         }
@@ -320,10 +376,16 @@
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        function removeFromCart(i) { cart.splice(i, 1); if(cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length < 2) freebie = null; updateUI(); }
-        function removeFreebie() { freebie = null; updateUI(); }
         function toggleMobileCart() { document.getElementById('mobileCartPanel').classList.toggle('open'); }
-        function startFreebieSelection() { document.body.classList.add('choosing-freebie-mode'); document.getElementById('selectionBanner').classList.remove('hidden'); if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); window.scrollTo({top: 0, behavior: 'smooth'}); }
+        
+        function startFreebieSelection() { 
+            document.body.classList.add('choosing-freebie-mode'); 
+            document.getElementById('selectionBanner').classList.remove('hidden'); 
+            if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); 
+            setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); 
+            window.scrollTo({top: 0, behavior: 'smooth'}); 
+        }
+        
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         loadData();
     </script>
