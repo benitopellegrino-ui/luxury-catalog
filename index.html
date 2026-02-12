@@ -9,7 +9,6 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         
-        // Imposta i valori di default (negati fino a prova contraria)
         gtag('consent', 'default', {
             'ad_storage': 'denied',
             'analytics_storage': 'denied',
@@ -25,7 +24,7 @@
     var _iub = _iub || [];
     _iub.csConfiguration = {
         "askConsentAtCookiePolicyUpdate":true,
-        "floatingPullLeft":false, // Disattivato il lato sinistro
+        "floatingPullLeft":true, // Spostato a sinistra per liberare il tasto Lista
         "gdprAppliesGlobally":true,
         "lang":"it",
         "siteId":3933560,
@@ -34,7 +33,7 @@
             "acceptButtonDisplay":true,
             "customizeButtonDisplay":true,
             "fontSize":"14px",
-            "position":"float-bottom-center" // Centrato per non coprire i tasti mobile
+            "position":"float-bottom-left" // Posizione corretta per evitare sovrapposizioni a destra
         }
     };
     </script>
@@ -55,17 +54,14 @@
 
         .filter-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 
-        /* MARQUEE */
         .marquee-container { overflow: hidden; white-space: nowrap; background: #f0edea; padding: 12px 0; border-top: 1px solid #d1c7bc; border-bottom: 1px solid #d1c7bc; margin-bottom: 20px; }
         .marquee-content { display: inline-block; animation: marquee-scroll 30s linear infinite; }
         .marquee-item { display: inline-block; margin-right: 50px; font-size: 11px; font-weight: 800; color: #555; text-transform: uppercase; letter-spacing: 0.1em; }
         @keyframes marquee-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* WHATSAPP */
         #waQuickBtn { position: fixed; bottom: 120px; right: 20px; background-color: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 110; cursor: pointer; transition: transform 0.2s; }
         #waQuickBtn:active { transform: scale(0.9); }
 
-        /* MODALE POPUP */
         #welcomePopup { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
 
         @keyframes pulse-gold {
@@ -84,8 +80,8 @@
             <button onclick="closePopup()" class="absolute top-4 right-4 text-2xl font-light">&times;</button>
             <h2 class="text-sm font-black uppercase tracking-widest mb-6">QUESTO SITO FUNGE DA LISTINO INTERATTIVO</h2>
             <div class="text-[12px] text-left space-y-4 text-gray-700 mb-8">
-                <p>1️⃣ <strong>Richiedere una consulenza Whatsapp</strong> (in merito all'acquisto, al formato e ai tuoi gusti)</p>
-                <p>2️⃣ <strong>Aggiungere già a carrello le tue Essenze Preferite</strong>, per poi inviarle al tuo referente su Whatsapp, al fine di velocizzare l'acquisto ed ottenere un OMAGGIO!</p>
+                <p>1️⃣ <strong>Richiedere una consulenza Whatsapp</strong></p>
+                <p>2️⃣ <strong>Aggiungere le tue Essenze</strong> per velocizzare l'ordine e ottenere un OMAGGIO!</p>
             </div>
             <button onclick="closePopup()" class="w-full bg-[#333333] text-[#bdae9b] py-4 font-black uppercase text-[11px] tracking-widest">HO CAPITO, ENTRA</button>
         </div>
@@ -100,7 +96,6 @@
 
     <div class="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-6 p-4">
         <div class="lg:w-2/3">
-            
             <div class="bg-white p-5 shadow-sm mb-6 sticky top-24 z-40 border border-gray-100">
                 <div class="filter-grid mb-4">
                     <button onclick="setFilter('format', 'all', this)" class="format-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Tutti</button>
@@ -110,36 +105,14 @@
                     <button onclick="setFilter('format', '50ml', this)" class="format-btn border border-amber-600 text-amber-700 py-2 text-[9px] font-bold uppercase bg-white col-span-4 mt-1">50ml Lux</button>
                 </div>
 
-                <input type="text" id="searchInput" placeholder="Cerca fragranza, marca o codice..." 
-                       class="w-full p-4 bg-[#fdfdfd] border border-gray-200 outline-none focus:border-tortora text-xs tracking-widest uppercase mb-4">
+                <input type="text" id="searchInput" placeholder="Cerca fragranza..." 
+                       class="w-full p-4 bg-[#fdfdfd] border border-gray-200 outline-none text-xs tracking-widest uppercase mb-4">
                 
                 <div class="filter-grid">
                     <button onclick="setFilter('type', 'all', this)" class="type-btn filter-active border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">All</button>
                     <button onclick="setFilter('type', 'Uomo', this)" class="type-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Uomo</button>
                     <button onclick="setFilter('type', 'Donna', this)" class="type-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Donna</button>
                     <button onclick="setFilter('type', 'Unisex', this)" class="type-btn border border-gray-200 py-2 text-[9px] font-bold uppercase bg-white">Unisex</button>
-                </div>
-
-                <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-lg">
-                    <p class="text-[11px] leading-relaxed text-amber-900 font-medium text-center">
-                        ⏳ <strong>PROMO ATTIVA per i prossimi 3 giorni:</strong><br>
-                        AGGIUNGI A CARRELLO N.2 PRODOTTI DA 50ml o 70ml, e ricevi in <strong>OMAGGIO</strong> una essenza da 30ml a tua scelta! 😳
-                    </p>
-                </div>
-            </div>
-
-            <div class="marquee-container">
-                <div class="marquee-content">
-                    <span class="marquee-item">🔥 MEGAMARE</span>
-                    <span class="marquee-item">🔥 BIANCO LATTE</span>
-                    <span class="marquee-item">🔥 BACCARAT ROUGE 540</span>
-                    <span class="marquee-item">🔥 NAXOS</span>
-                    <span class="marquee-item">🔥 ERBA PURA</span>
-                    <span class="marquee-item">🔥 BLACK AFGANO</span>
-                    <span class="marquee-item">🔥 KIRKÈ</span>
-                    <span class="marquee-item">🔥 MEGAMARE</span>
-                    <span class="marquee-item">🔥 BIANCO LATTE</span>
-                    <span class="marquee-item">🔥 BACCARAT ROUGE 540</span>
                 </div>
             </div>
 
@@ -150,41 +123,25 @@
             <div class="bg-white p-6 shadow-2xl sticky lg:top-24 border border-gray-100">
                 <h2 class="text-xs font-bold uppercase tracking-widest mb-6 border-b pb-4 text-gray-400">Riepilogo Scelte</h2>
                 <div id="cartList" class="space-y-3 mb-6 max-h-[450px] overflow-y-auto no-scrollbar"></div>
-                
-                <div id="promoBox" class="hidden bg-[#f4f1ee] p-4 mb-4 border border-[#d1c7bc]">
-                    <p id="promoText" class="text-[10px] font-bold text-[#8d8478] uppercase text-center"></p>
-                    <button id="freebieBtn" onclick="startFreebieSelection()" class="w-full bg-[#8d8478] text-white py-3 mt-3 text-[10px] font-black uppercase hidden shadow-lg">SCEGLI OMAGGIO +</button>
-                </div>
-
                 <div class="border-t pt-4 text-center">
-                    <div id="savingCalc" class="hidden mb-2 text-[10px] font-bold text-green-600 uppercase bg-green-50 py-1 px-2 rounded"></div>
-                    <span class="text-[10px] uppercase text-gray-400 font-bold tracking-widest">Totale Provvisorio</span>
                     <div class="choganTotalDisplay text-4xl font-light text-antracite">0.00 €</div>
-                    <button id="mainActionBtn" onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 mt-4 font-black uppercase text-[11px] border-2 border-[#bdae9b]">
-                        RICHIEDI CONSULENZA WHATSAPP
-                    </button>
+                    <button onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 mt-4 font-black uppercase text-[11px] border-2 border-[#bdae9b]">RICHIEDI CONSULENZA</button>
                 </div>
             </div>
         </div>
     </div>
 
     <div id="waQuickBtn" onclick="handleWhatsAppAction()">
-        <svg width="35" height="35" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/></svg>
+        <svg width="35" height="35" fill="currentColor" viewBox="0 0 16 16"><path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326z"/></svg>
     </div>
 
     <div class="lg:hidden fixed bottom-0 left-0 right-0 z-[100]">
-        <div id="mobileSaving" class="hidden bg-green-600 text-white text-center py-1.5 text-[8px] font-bold uppercase border-b border-green-500"></div>
-        <div id="mobileIncentive" class="hidden bg-amber-500 text-white text-center py-1.5 text-[8px] font-bold uppercase">
-            💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio da 30ml!
-        </div>
-        
         <div class="bg-[#333333] text-white p-4 flex justify-between items-center shadow-2xl">
             <div onclick="toggleMobileCart()">
                 <span class="text-[9px] uppercase text-[#bdae9b]">Totale</span>
                 <span class="choganTotalDisplay text-xl font-light block">0.00 €</span>
             </div>
             <div class="flex items-center gap-2">
-                <button id="quickFreebieBtn" onclick="startFreebieSelection()" class="hidden bg-[#bdae9b] text-[#333333] h-12 px-4 rounded font-black text-[10px] uppercase animate-gold">Omaggio +</button>
                 <button onclick="toggleMobileCart()" class="bg-white/10 h-12 px-4 rounded text-[10px] uppercase font-bold">
                     Lista <span id="cartBadge" class="ml-1 bg-[#bdae9b] text-[#333333] px-2 rounded-full">0</span>
                 </button>
@@ -200,53 +157,28 @@
         <div id="cartListMobile" class="flex-1 overflow-y-auto space-y-3 no-scrollbar"></div>
         <div class="border-t pt-6 text-center space-y-4">
             <div class="choganTotalDisplay text-4xl font-light">0.00 €</div>
-            <button id="mobileActionBtn" onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 font-black uppercase text-[11px] border-2 border-[#bdae9b]">RICHIEDI CONSULENZA</button>
+            <button onclick="handleWhatsAppAction()" class="w-full bg-[#333333] text-[#bdae9b] py-5 font-black uppercase text-[11px] border-2 border-[#bdae9b]">RICHIEDI CONSULENZA</button>
         </div>
     </div>
 
     <script>
         const WHATSAPP_NUMBER = "393275428780"; 
-        const COLLAB_NAME = new URLSearchParams(window.location.search).get('nome') || "Referente";
-
-        let allItems = [];
-        let cart = [];
-        let freebie = null;
-        let currentFormat = 'all';
-        let currentType = 'all';
+        let allItems = []; let cart = []; let freebie = null; let currentFormat = 'all'; let currentType = 'all';
 
         function closePopup() { document.getElementById('welcomePopup').style.display = 'none'; }
-
-        async function loadData() {
-            try {
-                const res = await fetch('listino.csv');
-                const data = await res.text();
-                parseCSV(data);
-            } catch (e) { console.error("Errore CSV"); }
-        }
+        async function loadData() { try { const res = await fetch('listino.csv'); const data = await res.text(); parseCSV(data); } catch (e) { console.error("Errore CSV"); } }
 
         function parseCSV(data) {
-            allItems = [];
-            const rows = data.split('\n').slice(1);
+            allItems = []; const rows = data.split('\n').slice(1);
             rows.forEach(row => {
-                const col = row.split(';');
-                if (col.length < 13) return;
-                const nome = col[0].trim();
-                const isp = col[1].trim();
-                const genere = col[12] ? col[12].trim() : "Unisex";
-
+                const col = row.split(';'); if (col.length < 13) return;
                 const add = (cod, pr, form) => {
                     if (cod && pr && pr.trim() !== "" && pr !== "-") {
                         let prezzo = parseFloat(pr.replace('€', '').replace(',', '.').trim());
-                        if (!isNaN(prezzo)) {
-                            let retail = (form.includes("15ml")) ? 45 : (form.includes("30ml") ? 75 : 130);
-                            allItems.push({ cod: cod.trim(), nome, isp, genere, formato: form, prezzo, retail });
-                        }
+                        if (!isNaN(prezzo)) allItems.push({ cod: cod.trim(), nome: col[0].trim(), isp: col[1].trim(), genere: col[12] ? col[12].trim() : "Unisex", formato: form, prezzo });
                     }
                 };
-                add(col[4], col[5], "15ml");
-                add(col[6], col[7], "30ml");
-                add(col[8], col[9], "70ml");
-                add(col[10], col[11], "50ml Luxury");
+                add(col[4], col[5], "15ml"); add(col[6], col[7], "30ml"); add(col[8], col[9], "70ml"); add(col[10], col[11], "50ml Luxury");
             });
             applyFilters();
         }
@@ -259,86 +191,30 @@
                 const matchSearch = !search || p.nome.toLowerCase().includes(search) || p.isp.toLowerCase().includes(search);
                 return matchFormat && matchType && matchSearch;
             });
-
             document.getElementById('productGrid').innerHTML = filtered.map(p => `
-                <div class="bg-white p-5 border border-gray-100 flex justify-between items-center shadow-sm">
+                <div class="bg-white p-5 border border-gray-100 flex justify-between items-center">
                     <div class="flex-1">
-                        <div class="flex gap-2 mb-2">
-                            <span class="text-[7px] font-black px-1.5 py-0.5 bg-zinc-100 text-zinc-500 rounded uppercase">${p.formato}</span>
-                            <span class="text-[7px] font-black px-1.5 py-0.5 ${p.genere === 'Uomo' ? 'bg-blue-100 text-blue-600' : p.genere === 'Donna' ? 'bg-rose-100 text-rose-600' : 'bg-zinc-800 text-white'} rounded uppercase">${p.genere}</span>
-                        </div>
                         <h3 class="font-bold text-xs uppercase tracking-widest">${p.nome}</h3>
-                        <p class="text-[9px] text-gray-400 italic">Ispirato a: ${p.isp}</p>
+                        <p class="text-[9px] text-gray-400 italic">${p.isp}</p>
                         <p class="mt-1 font-light text-lg">${p.prezzo.toFixed(2)} €</p>
                     </div>
-                    <button onclick="addToCart('${p.cod}')" class="bg-zinc-50 w-12 h-12 rounded-full text-2xl shadow-sm hover:bg-zinc-800 hover:text-white transition-colors">+</button>
-                </div>`).join('') || '<p class="col-span-full text-center py-10 text-gray-400 uppercase text-xs">Nessun risultato</p>';
+                    <button onclick="addToCart('${p.cod}')" class="bg-zinc-50 w-12 h-12 rounded-full text-2xl">+</button>
+                </div>`).join('');
         }
 
         function setFilter(type, value, btn) {
-            if(type === 'format') {
-                currentFormat = value;
-                document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('filter-active'));
-            } else {
-                currentType = value;
-                document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('filter-active'));
-            }
-            btn.classList.add('filter-active');
-            applyFilters();
+            if(type === 'format') { currentFormat = value; document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('filter-active')); }
+            else { currentType = value; document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('filter-active')); }
+            btn.classList.add('filter-active'); applyFilters();
         }
 
-        function addToCart(codice) {
-            const item = allItems.find(p => p.cod === codice);
-            if (document.body.classList.contains('choosing-freebie-mode')) {
-                if (item.formato === "30ml") {
-                    freebie = item;
-                    document.body.classList.remove('choosing-freebie-mode');
-                    document.getElementById('selectionBanner').classList.add('hidden');
-                    updateUI();
-                } else alert("Scegli un 30ml come omaggio!");
-                return;
-            }
-            cart.push(item);
-            updateUI();
-        }
+        function addToCart(codice) { const item = allItems.find(p => p.cod === codice); cart.push(item); updateUI(); }
+        function removeFromCart(i) { cart.splice(i, 1); updateUI(); }
+        function toggleMobileCart() { document.getElementById('mobileCartPanel').classList.toggle('open'); }
 
         function updateUI() {
             const total = cart.reduce((s, p) => s + p.prezzo, 0);
-            const retailTotal = cart.reduce((s, p) => s + p.retail, 0);
-            const savings = retailTotal - total;
-            const countPromo = cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length;
-            const promoActive = countPromo >= 2;
-            
-            const btnText = cart.length > 0 ? "🤩 Ho aggiunto le mie Essenze, GUIDAMI all'acquisto!" : "RICHIEDI CONSULENZA WHATSAPP";
-            document.getElementById('mainActionBtn').innerText = btnText;
-            document.getElementById('mobileActionBtn').innerText = btnText;
-
-            if(cart.length > 0) {
-                const saveMsg = `💰 Risparmio stimato: circa ${savings.toFixed(0)}€ rispetto al negozio!`;
-                document.getElementById('savingCalc').innerText = saveMsg;
-                document.getElementById('savingCalc').classList.remove('hidden');
-                document.getElementById('mobileSaving').innerText = saveMsg;
-                document.getElementById('mobileSaving').classList.remove('hidden');
-                const isIncentiveVisible = countPromo === 1;
-                document.getElementById('mobileIncentive').classList.toggle('hidden', !isIncentiveVisible);
-            } else {
-                document.getElementById('savingCalc').classList.add('hidden');
-                document.getElementById('mobileSaving').classList.add('hidden');
-                document.getElementById('mobileIncentive').classList.add('hidden');
-            }
-
-            const promoMsg = promoActive ? "✨ PROMO ATTIVA: OMAGGIO SBLOCCATO!" : (countPromo === 1 ? "💡 Aggiungi un altro da 70ml o 50ml per l'Omaggio!" : "");
-            document.getElementById('promoBox').classList.toggle('hidden', !promoMsg);
-            document.getElementById('promoText').innerText = promoMsg;
-            document.getElementById('freebieBtn').classList.toggle('hidden', !promoActive || !!freebie);
-            document.getElementById('quickFreebieBtn').classList.toggle('hidden', !promoActive || !!freebie);
-
-            const listHTML = cart.map((p, i) => `
-                <div class="cart-item bg-white p-3 border mb-2 flex justify-between items-center rounded-lg text-[10px]">
-                    <div><p class="font-bold uppercase">${p.nome}</p><p class="text-gray-400">${p.formato} - ${p.genere}</p></div>
-                    <button onclick="removeFromCart(${i})" class="btn-remove">✕</button>
-                </div>`).join('') + (freebie ? `<div class="bg-amber-50 p-3 border border-amber-200 rounded-lg text-[10px] flex justify-between items-center mt-2"><span>🎁 <b>OMAGGIO:</b> ${freebie.nome} (30ml)</span><button onclick="removeFreebie()" class="text-red-500 font-bold">✕</button></div>` : '');
-            
+            const listHTML = cart.map((p, i) => `<div class="bg-white p-3 border mb-2 flex justify-between items-center text-[10px]"><span>${p.nome}</span><button onclick="removeFromCart(${i})" class="btn-remove">✕</button></div>`).join('');
             document.getElementById('cartList').innerHTML = listHTML || '<p class="text-center py-5 text-gray-400 uppercase text-[10px]">Lista vuota</p>';
             document.getElementById('cartListMobile').innerHTML = document.getElementById('cartList').innerHTML;
             document.querySelectorAll('.choganTotalDisplay').forEach(el => el.innerText = total.toFixed(2) + " €");
@@ -346,41 +222,14 @@
         }
 
         function handleWhatsAppAction() {
-            let msg = cart.length === 0 ? `Ciao ${decodeURIComponent(COLLAB_NAME)}, vorrei avere info in merito alle vostre essenze.` : `*ESSENZE PREFERITE AGGIUNTE*\n\n` + cart.map(p => `• ${p.nome} (${p.formato})`).join('\n');
-            if(freebie) msg += `\n\n🎁 *OMAGGIO SCELTO:* ${freebie.nome} (30ml)`;
-            if(cart.length > 0) msg += `\n\nMi guideresti all'acquisto?`;
+            let msg = cart.length === 0 ? "Ciao, vorrei info." : `*MIE PREFERENZE:*\n` + cart.map(p => `• ${p.nome}`).join('\n');
             window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
-        function removeFromCart(i) { cart.splice(i, 1); if(cart.filter(p => p.formato === '70ml' || p.formato.includes('50ml')).length < 2) freebie = null; updateUI(); }
-        function removeFreebie() { freebie = null; updateUI(); }
-        function toggleMobileCart() { document.getElementById('mobileCartPanel').classList.toggle('open'); }
-        function startFreebieSelection() { document.body.classList.add('choosing-freebie-mode'); document.getElementById('selectionBanner').classList.remove('hidden'); if(document.getElementById('mobileCartPanel').classList.contains('open')) toggleMobileCart(); setFilter('format', '30ml', document.querySelector('[onclick*="30ml"]')); window.scrollTo({top: 0, behavior: 'smooth'}); }
-        
         document.getElementById('searchInput').addEventListener('input', applyFilters);
         loadData();
     </script>
 
-    <footer class="bg-[#333333] text-[#f4f4f2] p-8 mt-12 border-t border-[#bdae9b]/30">
-        <div class="max-w-[1400px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="text-center md:text-left">
-                <p class="text-[10px] uppercase tracking-widest font-bold mb-2">🇮🇹 Italian Luxury Essence</p>
-                <p class="text-[9px] text-gray-400 leading-relaxed max-w-sm">
-                    Questo sito è un listino interattivo a scopo illustrativo. 
-                    <b>Non si effettuano vendite dirette su questa piattaforma.</b> 
-                    Gli ordini e i pagamenti vengono perfezionati tramite i canali ufficiali Chogan Group SpA.
-                </p>
-            </div>
-            
-            <div class="flex flex-wrap justify-center gap-4 text-[9px] uppercase tracking-tighter font-bold">
-                <a href="https://www.iubenda.com/termini-e-condizioni/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Termini e Condizioni">Termini e Condizioni</a>
-                <a href="https://www.iubenda.com/privacy-policy/60532041" class="iubenda-white no-brand iubenda-noiframe iub-legal-only iubenda-embed" title="Privacy Policy">Privacy Policy</a>
-                <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener noreferrer" class="hover:text-[#bdae9b]">Piattaforma ODR</a>
-            </div>
-        </div>
-    </footer>
-
     <script type="text/javascript">(function (w, d) { var loader = function () { var s = d.createElement("script"), tag = d.body; s.src = "https://cdn.iubenda.com/iubenda.js"; tag.appendChild(s); }; if (w.addEventListener) { w.addEventListener("load", loader, false); } else if (w.attachEvent) { w.attachEvent("onload", loader); } else { w.onload = loader; } })(window, document);</script>
-
 </body>
 </html>
