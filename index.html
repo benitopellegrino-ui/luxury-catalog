@@ -80,14 +80,41 @@
 <body class="bg-[#f8f7f5] text-[#333333] font-sans pb-40 lg:pb-0">
 
     <div id="welcomePopup">
-        <div class="bg-white max-w-md w-full p-8 relative rounded-lg shadow-2xl text-center">
+        <div class="bg-white max-w-md w-full p-8 relative rounded-lg shadow-2xl text-left overflow-y-auto max-h-[90vh]">
             <button onclick="closePopup()" class="absolute top-4 right-4 text-2xl font-light">&times;</button>
-            <h2 class="text-sm font-black uppercase tracking-widest mb-6">QUESTO SITO FUNGE DA LISTINO INTERATTIVO</h2>
-            <div class="text-[12px] text-left space-y-4 text-gray-700 mb-8">
-                <p>1️⃣ <strong>Richiedere una consulenza Whatsapp</strong> (in merito all'acquisto, al formato e ai tuoi gusti)</p>
-                <p>2️⃣ <strong>Aggiungere già a carrello le tue Essenze Preferite</strong>, per poi inviarle al tuo referente su Whatsapp, al fine di velocizzare l'acquisto ed ottenere un OMAGGIO!</p>
+            
+            <div id="welcome-popup" style="font-family: sans-serif; line-height: 1.5; color: #333; margin-top: 10px;">
+                <h2 style="color: #d4af37; text-align: center;">Benvenuto in Italian Luxury Essence! ✨</h2>
+                
+                <p>Sei nel posto giusto se cerchi fragranze indimenticabili. Qui non troverai robot: siamo <strong>persone reali</strong> pronte a darti supporto <strong>live su WhatsApp</strong> per ogni tuo dubbio o consiglio nella scelta del profumo perfetto.</p>
+
+                <div style="background: #f9f9f9; padding: 15px; border-radius: 8px; border-left: 5px solid #d4af37; margin: 15px 0;">
+                    <p><strong>Cosa puoi fare ora?</strong></p>
+                    <ul style="padding-left: 20px;">
+                        <li style="margin-bottom: 10px;"><strong>1️⃣ Sfoglia il listino interattivo:</strong> Guarda tutte le fragranze. Il sito serve come catalogo: scegli ciò che ami senza dover pagare nulla subito!</li>
+                        <li><strong>2️⃣ Scegli e ricevi un OMAGGIO:</strong> Aggiungi le tue essenze preferite al carrello e inviale al tuo referente su WhatsApp. Velocizzerai l'acquisto e otterrai un <strong>regalo esclusivo! 🎁</strong></li>
+                    </ul>
+                </div>
+
+                <p><strong>Perché scegliere i nostri profumi?</strong></p>
+                <ul style="list-style-type: '💎 '; padding-left: 20px;">
+                    <li><strong>Più Essenza, più Passione:</strong> Mentre i profumi comuni hanno il 10% di essenza, le nostre creazioni vantano il <strong>30% di essenza purissima</strong>.</li>
+                    <li><strong>Persistenza Incredibile:</strong> Una durata che ti accompagnerà tutto il giorno. Provare per credere!</li>
+                </ul>
+
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+
+                <p style="font-size: 0.9em; color: #666;">
+                    🚚 <strong>Spedizione:</strong> 3/4 gg lavorativi (Gratis sopra i 150€, altrimenti solo 4,95€).<br>
+                    💳 <strong>Pagamento:</strong> Potrai decidere se procedere sul sito o tramite il tuo referente.
+                </p>
+
+                <p style="text-align: center; font-weight: bold; margin-top: 20px; color: #d4af37;">
+                    Guarda ora il catalogo e trova la fragranza più adatta a te!
+                </p>
             </div>
-            <button onclick="closePopup()" class="w-full bg-[#333333] text-[#bdae9b] py-4 font-black uppercase text-[11px] tracking-widest">HO CAPITO, ENTRA</button>
+
+            <button onclick="closePopup()" class="w-full bg-[#333333] text-[#bdae9b] py-4 mt-4 font-black uppercase text-[11px] tracking-widest rounded">HO CAPITO, ENTRA NEL SITO</button>
         </div>
     </div>
 
@@ -123,7 +150,7 @@
                 <div class="mt-4 bg-amber-50 border border-amber-200 p-4 rounded-lg">
                     <p class="text-[11px] leading-relaxed text-amber-900 font-medium text-center">
                         ⏳ <strong>PROMO ATTIVA per i prossimi 3 giorni:</strong><br>
-                        AGGIUNGI ALLA LISTA N.2 PRODOTTI DA 50ml o 70ml, e ricevi in <strong>OMAGGIO</strong> una essenza da 30ml a tua scelta! 😳
+                        AGGIUNGI A CARRELLO N.2 PRODOTTI DA 50ml o 70ml, e ricevi in <strong>OMAGGIO</strong> una essenza da 30ml a tua scelta! 😳
                     </p>
                 </div>
             </div>
@@ -227,7 +254,7 @@
 
             <div class="border-t border-white/10 pt-8 text-center mb-6">
                 <p class="text-[8px] text-gray-400 leading-relaxed uppercase tracking-widest max-w-4xl mx-auto italic">
-                    <b>NOTA SUI MARCHI:</b> I nomi dei marchi e i riferimenti ai profumi originali sono utilizzati esclusivamente a scopo descrittivo, per facilitare l'individuazione della fragranza (Art. 21 c.1 lett. C - D.Lgs 30 febbraio 2005, n.30). Tutti i marchi e i nomi citati appartengono ai rispettivi proprietari. Acquistando un prodotto Chogan, si acquista una fragranza ORIGINALE a marchio OLFAZETA, prodotta e confezionata nei propri stabilimenti.
+                    <b>NOTA SUI MARCHI:</b> I nomi dei marchi e i riferimenti ai profumi originali sono utilizzati esclusivamente a scopo descrittivo, per facilitare l'individuazione della fragranza (Art. 21 c.1 lett. C - D.Lgs 30 febbraio 2005, n.30). Tutti i marchi e i nomi citati appartengono ai rispettivi proprietari. Acquistando un prodotto Chogan, si acquista una fragranza ORIGINALE a marchio CHOGAN, prodotta e confezionata nei propri stabilimenti.
                 </p>
             </div>
 
